@@ -8,6 +8,7 @@ import lombok.ToString;
 import javax.persistence.Lob;
 import javax.validation.constraints.NotEmpty;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @auther AliZhou
@@ -66,7 +67,7 @@ public class ExpertInfoRes {
 
     private List<EngagedMajorEntity> engagedMajors;
 
-    private List<DeclareMajorEntity> declareMajors;
+    private Map<String,List<DeclareMajorArrayRes>> declareMajors;
 
     private String resume;    //个人简历
 

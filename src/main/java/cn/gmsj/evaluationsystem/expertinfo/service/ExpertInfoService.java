@@ -6,10 +6,12 @@ import cn.gmsj.evaluationsystem.exception.WafException;
 import cn.gmsj.evaluationsystem.expertinfo.domain.entity.*;
 import cn.gmsj.evaluationsystem.expertinfo.domain.repository.*;
 import cn.gmsj.evaluationsystem.expertinfo.web.req.ExpertInfoReq;
+import cn.gmsj.evaluationsystem.expertinfo.web.res.DeclareMajorArrayRes;
 import cn.gmsj.evaluationsystem.expertinfo.web.res.DeclareMajorListRes;
 import cn.gmsj.evaluationsystem.expertinfo.web.res.ExpertInfoRes;
 import cn.gmsj.evaluationsystem.utils.ResultUtil;
 import cn.gmsj.evaluationsystem.utils.UpdateUtil;
+import cn.hutool.core.util.ObjectUtil;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -23,9 +25,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author 13562
@@ -114,7 +114,34 @@ public class ExpertInfoService {
         }else {
             declareMajorsStr.add(new Long(expertInfoEntity.getDeclareMajors()));
         }
+        List<String> declareMajorTypeNames=new ArrayList<>();
+        List<DeclareMajorTypeEntity> declareMajorTypeEntityList=declareMajorTypeRepository.findAll();
+        for(DeclareMajorTypeEntity declareMajorTypeEntity:declareMajorTypeEntityList){
+            declareMajorTypeNames.add(declareMajorTypeEntity.getDeclareMajorTypeName());
+        }
         List<DeclareMajorEntity> declareMajorEntityList=declareMajorRepository.findAllByIdIn(declareMajorsStr);
+        Map<String,List<DeclareMajorArrayRes>> decMap=new HashMap<>();
+        List<DeclareMajorArrayRes> declareMajorArrayResList=new ArrayList<>();
+        for(DeclareMajorEntity declareMajorEntity:declareMajorEntityList){
+            String declareMajorTypeName=declareMajorEntity.getDeclareMajorTypeEntity().getDeclareMajorTypeName();
+            declareMajorArrayResList=decMap.get(declareMajorTypeName);
+            if(declareMajorArrayResList==null){
+                declareMajorArrayResList=new ArrayList<>();
+            }
+            DeclareMajorArrayRes declareMajorArrayRes=new DeclareMajorArrayRes();
+            declareMajorArrayRes.setId(declareMajorEntity.getId());
+            declareMajorArrayRes.setDeclareMajorName(declareMajorEntity.getDeclareMajorName());
+            declareMajorArrayResList.add(declareMajorArrayRes);
+            decMap.put(declareMajorTypeName,declareMajorArrayResList);
+        }
+        for(int i=0;i<declareMajorTypeNames.size();i++){
+            String typeName=declareMajorTypeNames.get(i);
+            List<DeclareMajorArrayRes> oldDeclareMajorArrayRes=decMap.get(typeName);
+            if(oldDeclareMajorArrayRes==null){
+                oldDeclareMajorArrayRes=new ArrayList<>();
+                decMap.put(typeName,oldDeclareMajorArrayRes);
+            }
+        }
         ExpertInfoRes expertInfoRes=new ExpertInfoRes();
         expertInfoRes.setId(expertInfoEntity.getId());
         expertInfoRes.setName(expertInfoEntity.getName());
@@ -141,7 +168,7 @@ public class ExpertInfoService {
         expertInfoRes.setSeniority(expertInfoEntity.getSeniority());
         expertInfoRes.setStudyMajors(studyMajorEntityList);
         expertInfoRes.setEngagedMajors(engagedMajorEntityList);
-        expertInfoRes.setDeclareMajors(declareMajorEntityList);
+        expertInfoRes.setDeclareMajors(decMap);
         expertInfoRes.setResume(expertInfoEntity.getResume());
         expertInfoRes.setAcademicSituation(expertInfoEntity.getAcademicSituation());
         expertInfoRes.setReward(expertInfoEntity.getReward());
