@@ -1,5 +1,6 @@
 package cn.gmsj.evaluationsystem.common.domain.entity;
 
+import cn.gmsj.evaluationsystem.enums.UserDataType;
 import lombok.Data;
 import lombok.ToString;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -30,6 +31,11 @@ public class BaseEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    /**
+     * 用户数据类型
+     */
+    private UserDataType userDataType;
 
     /**
      * 创建时间
