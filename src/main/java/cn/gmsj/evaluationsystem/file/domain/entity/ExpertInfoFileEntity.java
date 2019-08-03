@@ -11,7 +11,7 @@ import javax.persistence.*;
  */
 @Data
 @ToString
-@Entity(name = "all_file")
+@Entity(name = "all_experti_info_file")
 public class ExpertInfoFileEntity extends BaseEntity {
 
     private static final long serialVersionUID = -1L;

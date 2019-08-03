@@ -2,6 +2,7 @@ package cn.gmsj.evaluationsystem.expertinfo.domain.entity;
 
 import cn.gmsj.evaluationsystem.common.domain.entity.BaseEntity;
 import cn.gmsj.evaluationsystem.expertinfo.domain.enums.ExpertInfoType;
+import cn.gmsj.evaluationsystem.expertinfo.domain.enums.SexType;
 import lombok.Data;
 import lombok.ToString;
 import sun.plugin.dom.core.Text;
@@ -27,7 +28,7 @@ public class ExpertInfoEntity extends BaseEntity implements Serializable {
     private String name;
 
     @NotEmpty(message = "性别不能为空")
-    private String sex;
+    private SexType sex;
 
     @NotEmpty(message = "出生日期不能为空")
     private String birthday;

@@ -2,6 +2,7 @@ package cn.gmsj.evaluationsystem.expertinfo.web.res;
 
 import cn.gmsj.evaluationsystem.expertinfo.domain.entity.*;
 import cn.gmsj.evaluationsystem.expertinfo.domain.enums.ExpertInfoType;
+import cn.gmsj.evaluationsystem.expertinfo.domain.enums.SexType;
 import lombok.Data;
 import lombok.ToString;
 
@@ -21,7 +22,7 @@ public class ExpertInfoRes {
 
     private String name;
 
-    private String sex;
+    private SexType sex;
 
     private String birthday;
 
