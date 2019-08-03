@@ -1,12 +1,13 @@
 package cn.gmsj.evaluationsystem.expertinfo.web.req;
 
+import cn.gmsj.evaluationsystem.common.web.req.BasePageReq;
+import cn.gmsj.evaluationsystem.expertinfo.domain.enums.ExpertInfoType;
 import lombok.Data;
+import lombok.ToString;
 
-/**
- * @author 13562
- */
 @Data
+@ToString
 public class ExpertInfoReq {
-
-    private Long id;
+    private ExpertInfoType expertInfoType;
+    private String idCard;
 }

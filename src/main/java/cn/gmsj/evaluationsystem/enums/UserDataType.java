@@ -5,22 +5,17 @@ package cn.gmsj.evaluationsystem.enums;
  */
 
 public enum UserDataType {
-    /**
-     * 数据
-     */
-    PERSONAGE("个人"),
-    /**
-     * 错误类型
-     */
-    BUREAU_ENERGY ("能源局"),
-    /**
-     * 错误消息
-     */
+
+    SPECIALIST("专家"),
+
+
+    BUREAU_ENERGY ("贵州省能源局"),
+
+
     THIRD_PARTY("第三方机构"),
-    /**
-     * 总条数
-     */
-    COAL_BUREAU ("煤监局");
+
+
+    COAL_BUREAU ("贵州省煤监局");
 
 
     private String name;
