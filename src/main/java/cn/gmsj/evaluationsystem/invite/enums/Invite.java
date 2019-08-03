@@ -1,26 +1,26 @@
-package cn.gmsj.evaluationsystem.enums;
+package cn.gmsj.evaluationsystem.invite.enums;
 
 /**
  * 邀请类型
+ *
+ * @author 13562
  */
 
-public enum InviteType {
+public enum Invite {
     /**
-     * 技术咨询报告
+     * 邀请专家
      */
-    SCIENCE_REPOT("技术咨询报告"),
+    EXPERT("专家"),
 
     /**
      * 邀请第三方机构
      */
-    INVITE_THIRD_PARTY("邀请第三方机构");
-
-
+    THIRD_PARTY("第三方机构");
 
     private String name;
 
-    InviteType(String name) {
-        this.name  = name ;
+    Invite(String name) {
+        this.name = name;
     }
 
     public String getName() {
