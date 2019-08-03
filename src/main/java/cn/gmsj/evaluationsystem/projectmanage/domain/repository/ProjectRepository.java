@@ -6,13 +6,9 @@ import cn.gmsj.evaluationsystem.common.domain.repository.BaseRepository;
 import cn.gmsj.evaluationsystem.projectmanage.domain.entity.ProjectEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
-
+/**
+ * @author liuwei
+ */
 public interface ProjectRepository extends BaseRepository<ProjectEntity>, JpaRepository<ProjectEntity, Long> {
-
-
-  //  List<ProjectEntity> findAllById(Integer id);
-
-
 
 }
