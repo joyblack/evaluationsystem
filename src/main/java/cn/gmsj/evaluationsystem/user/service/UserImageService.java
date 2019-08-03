@@ -5,7 +5,7 @@ import cn.gmsj.evaluationsystem.user.domain.entity.UserEntity;
 import cn.gmsj.evaluationsystem.user.domain.model.ResultFile;
 import cn.gmsj.evaluationsystem.user.domain.reposiory.UserImageRepository;
 import cn.gmsj.evaluationsystem.user.domain.reposiory.UserRepository;
-import cn.gmsj.evaluationsystem.utils.FileUtill;
+import cn.gmsj.evaluationsystem.utils.FileUtil;
 import cn.gmsj.evaluationsystem.utils.ResultUtil;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,7 +52,7 @@ public class UserImageService {
         if (null == names || names.length == 0) {
             return ResultUtil.error("文件错误");
         }
-        if (FileUtill.fileNamePostfixCheck(imageFormat, names[names.length - 1])) {
+        if (FileUtil.fileNamePostfixCheck(imageFormat, names[names.length - 1])) {
             return ResultUtil.error("文件类型错误");
         }
         // 保存文件名
@@ -70,7 +70,7 @@ public class UserImageService {
         userImageEntity.setPath(fileFinalPath + File.separator + fileName);
         // 保存上传文件
         try {
-            FileUtill.save(file.getBytes(), fileFinalPath, fileName);
+            FileUtil.save(file.getBytes(), fileFinalPath, fileName);
         } catch (IOException e) {
             e.printStackTrace();
             return ResultUtil.error("文件上传失败");

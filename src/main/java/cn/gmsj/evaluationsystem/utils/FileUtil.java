@@ -5,7 +5,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLEncoder;
 
-public class FileUtill {
+public class FileUtil {
 
     public static void save(byte[] files, String path, String fileName) throws IOException {
         // 目标目录
