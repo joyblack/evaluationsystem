@@ -23,7 +23,6 @@ public class UserImageController {
             value = "/save",
             produces = {"application/json;charset=UTF-8"})
     public Object save(@RequestParam("file") MultipartFile file, HttpServletRequest request) {
-        System.out.println(">>>>>>>");
         if (file.isEmpty()) {
             return ResultUtil.error("上传文件不能为空");
         }
