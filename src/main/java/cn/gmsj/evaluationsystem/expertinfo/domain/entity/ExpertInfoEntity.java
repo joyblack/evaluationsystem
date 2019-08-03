@@ -1,14 +1,12 @@
 package cn.gmsj.evaluationsystem.expertinfo.domain.entity;
 
 import cn.gmsj.evaluationsystem.common.domain.entity.BaseEntity;
+import cn.gmsj.evaluationsystem.expertinfo.domain.enums.ExpertInfoType;
 import lombok.Data;
 import lombok.ToString;
 import sun.plugin.dom.core.Text;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.awt.*;
@@ -124,17 +122,18 @@ public class ExpertInfoEntity extends BaseEntity implements Serializable {
     @NotNull(message = "申报专业不能为空")
     private String declareMajors;
 
+    @Lob
     private String resume;    //个人简历
-
+    @Lob
     private String academicSituation;     //发明著作学术论文情况
-
+    @Lob
     private String reward;     //   受奖励情况
-
+    @Lob
     private String researchFinding; //安全生产相关工作主要业绩及研究成果
 
     private String pictureUrl;     //照片路径。
 
     private String materialUrl;     //上传资料路径。
 
-    private String status;     //信息状态,1表示暂存，2提交，3审核通过，审核通过，备份一份，可以在信息维护处还原。
+    private ExpertInfoType expertInfoType;     //专家信息状态
 }
