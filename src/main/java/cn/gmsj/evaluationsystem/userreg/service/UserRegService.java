@@ -1,13 +1,7 @@
 package cn.gmsj.evaluationsystem.userreg.service;
 
 import java.util.Date;
-
-import javax.servlet.http.HttpServletRequest;
-
-import cn.gmsj.evaluationsystem.enums.UserDataType;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-
 import com.alibaba.fastjson.JSONObject;
 
 
@@ -20,7 +14,6 @@ import cn.gmsj.evaluationsystem.utils.ResultUtil;
 import cn.gmsj.evaluationsystem.utils.UpdateUtil;
 import org.springframework.stereotype.Service;
 
-import static cn.gmsj.evaluationsystem.enums.UserDataType.EXPERT;
 
 
 /**
@@ -40,7 +33,7 @@ public class UserRegService {
             userRegEntity.setUpdateTime(new Date());
         }
 		//1表示专家注册
-		if ( EXPERT.equals(userRegEntity.getUserDataType())){
+		if ( userRegEntity.getUserDataType().getName().equals(userRegEntity.getUserDataType().getName())){
 			if (userRegEntity.getNumberId()!=null){
 				//身份证验证
 				String numId=userRegEntity.getNumberId();
