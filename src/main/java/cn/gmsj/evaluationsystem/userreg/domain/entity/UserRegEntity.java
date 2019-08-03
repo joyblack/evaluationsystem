@@ -25,14 +25,16 @@ public class UserRegEntity extends BaseEntity implements Serializable {
     private UserDataType userDataType;
 
 	private String uname;
-	@NotEmpty(message=	"不能为空")
+
 	private String numberId;
 	
 	private String password;
 	@Transient//临时注解
 	private  String repassword;
+
 	@NotEmpty(message=	"不能为空")
 	private String phone;
+
 	@Transient
 	private String code;//验证码
 
