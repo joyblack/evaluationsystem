@@ -4,11 +4,14 @@ import cn.gmsj.evaluationsystem.common.constant.SystemConstant;
 import cn.gmsj.evaluationsystem.invite.service.ProjectInviteService;
 import cn.gmsj.evaluationsystem.invite.web.req.ProjectInviteListReq;
 import cn.gmsj.evaluationsystem.invite.web.req.ProjectInviteReq;
+import cn.gmsj.evaluationsystem.utils.TokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author 13562
@@ -55,7 +58,8 @@ public class ProjectInviteController {
     @PostMapping(
             value = "/getAllByUser",
             produces = {"application/json;charset=UTF-8"})
-    public Object getAllByUser(@RequestBody ProjectInviteListReq projectInviteListReq) {
+    public Object getAllByUser(@RequestBody ProjectInviteListReq projectInviteListReq, HttpServletRequest request) {
+        projectInviteListReq.setUserId(TokenUtil.getUserId(request));
         return projectInviteService.getAllByUser(projectInviteListReq);
     }
 
