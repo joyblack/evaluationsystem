@@ -2,16 +2,17 @@ package cn.gmsj.evaluationsystem.file.web;
 
 import cn.gmsj.evaluationsystem.common.constant.SystemConstant;
 import cn.gmsj.evaluationsystem.exception.WafException;
-import cn.gmsj.evaluationsystem.file.domain.entity.FileEntity;
 import cn.gmsj.evaluationsystem.file.service.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author Alan
@@ -23,15 +24,18 @@ public class FileController {
     @Autowired
     private FileService fileService;
 
+    /**
+     * 上传文件
+     */
     @RequestMapping(
         value = "/updateData",
-        method = RequestMethod.POST,
-        produces = {"application/json;charset=UTF-8"})
-    public Object updateData(MultipartFile file, FileEntity fileEntity, HttpServletRequest request) {
-        if (null == file && fileEntity != null && null == fileEntity.getId()) {
+        method = RequestMethod.POST)
+    public Object updateData(MultipartFile file) {
+        System.out.println(">>>>>>>>");
+        if (null == file) {
             throw new WafException("", "上传文件不能为空", HttpStatus.NOT_ACCEPTABLE);
         } else {
-            return fileService.updateData(file, fileEntity, request);
+            return fileService.updateData(file);
         }
     }
 
@@ -39,7 +43,7 @@ public class FileController {
 //        value = "/getDataById",
 //        method = RequestMethod.POST,
 //        produces = {"application/json;charset=UTF-8"})
-//    public Object getDataById(@RequestBody FileEntity fileEntity) {
+//    public Object getDataById(@RequestBody ExpertInfoFileEntity fileEntity) {
 //        return fileService.getDataById(fileEntity);
 //    }
 //
@@ -47,7 +51,7 @@ public class FileController {
 //        value = "/deleteDataById",
 //        method = RequestMethod.POST,
 //        produces = {"application/json;charset=UTF-8"})
-//    public Object deleteDataById(@RequestBody FileEntity fileEntity) {
+//    public Object deleteDataById(@RequestBody ExpertInfoFileEntity fileEntity) {
 //        return fileService.deleteDataById(fileEntity);
 //    }
 //
@@ -66,7 +70,7 @@ public class FileController {
 //        value = "/disposeData",
 //        method = RequestMethod.POST,
 //        produces = {"application/json;charset=UTF-8"})
-//    public Object disposeData(@RequestBody FileEntity fileEntity) {
+//    public Object disposeData(@RequestBody ExpertInfoFileEntity fileEntity) {
 //        return fileService.disposeData(fileEntity);
 //    }
 //
@@ -74,7 +78,7 @@ public class FileController {
 //        value = "/downloadData",
 //        method = RequestMethod.GET)
 //    public void downloadData(
-//        FileEntity fileEntity, HttpServletRequest request, HttpServletResponse response) {
+//        ExpertInfoFileEntity fileEntity, HttpServletRequest request, HttpServletResponse response) {
 //        fileService.downloadData(fileEntity, request, response);
 //    }
 }

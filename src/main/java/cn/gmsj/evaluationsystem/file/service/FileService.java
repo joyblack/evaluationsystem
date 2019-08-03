@@ -1,36 +1,19 @@
 package cn.gmsj.evaluationsystem.file.service;
 
 import cn.gmsj.evaluationsystem.exception.WafException;
-import cn.gmsj.evaluationsystem.file.domain.entity.FileEntity;
-import cn.gmsj.evaluationsystem.file.domain.repository.FileRepository;
-import cn.gmsj.evaluationsystem.file.web.req.FileListReq;
+import cn.gmsj.evaluationsystem.file.domain.entity.ExpertInfoFileEntity;
+import cn.gmsj.evaluationsystem.file.domain.repository.ExpertInfoFileRepository;
 import cn.gmsj.evaluationsystem.utils.ResultUtil;
-import cn.gmsj.evaluationsystem.utils.StringUtil;
-import cn.gmsj.evaluationsystem.utils.UpdateUtil;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.IdUtil;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.*;
-import java.net.URLEncoder;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -45,56 +28,42 @@ public class FileService {
 ////    @Value("${file.base.path}")
 ////    private String basePath;
 
-    private static String[] filePostfix={".exe",".bat"};
+    private static String[] filePostfixes={".exe",".bat"};
 
     @Autowired
-    private FileRepository fileRepository;
+    private ExpertInfoFileRepository expertInfoFileRepository;
 
-    public JSONObject updateData(MultipartFile file, FileEntity fileEntity, HttpServletRequest request) {
-//        String basePath="H:\file";
-//        if (fileEntity.getId() != null && file == null) {
-//            UpdateUtil.copyProperties(fileRepository.findAllById(fileEntity.getId()), fileEntity);
-//            fileEntity.setUpdateTime(new Date());
-//            FileEntity fileEntity1 = fileRepository.save(fileEntity);
-//            return ResultUtil.success(fileEntity1);
-//        } else {
-//            String[] filePostfixes = filePostfix.split();
-//            String name = file.getOriginalFilename();
-//            String[] names = name.split("\\.");
-//            if (null == names || names.length == 0) {
-//                throw new WafException("", "文件错误", HttpStatus.NOT_ACCEPTABLE);
-//            } else if (Arrays.asList(filePostfixes).contains(names[names.length - 1])) {
-//                throw new WafException("", "文件类型错误", HttpStatus.NOT_ACCEPTABLE);
-//            } else {
-//                List<FileEntity> fileEntities = fileRepository.findAllByNameAndIdNot(name,fileEntity.getId());
-//                if (fileEntities != null && fileEntities.size() > 0) {
-//                    throw new WafException("", "文件名称重复", HttpStatus.NOT_ACCEPTABLE);
-//                }
-//                String uuid = IdUtil.simpleUUID();
-//                fileEntity.setName(name);
-//                fileEntity.setUuid(uuid);
-//                fileEntity.setUuidFileName(uuid + "." + names[names.length - 1]);
-//                String[] basePaths = basePath.split(ConstantsEnum.SEGMENTATION.getName());
-//                StringBuffer filePaths = new StringBuffer();
-//                for (String s : basePaths) {
-//                    filePaths.append(s + File.separator);
-//                }
-//                filePaths.append(fileEntity.getUuidFileName());
-//                fileEntity.setPath(filePaths.toString());
-//                try {
-//                    FileUtil.writeBytes(file.getBytes(),
-//                        new File(filePaths.toString()));
-//                } catch (IOException e) {
-//                    throw new WafException("", "文件写入错误", HttpStatus.NOT_ACCEPTABLE);
-//                }
-//                FileEntity fileEntity1 = fileRepository.save(fileEntity);
-//                return ResultUtil.success(fileEntity1);
+    public JSONObject updateData(MultipartFile file) {
+        String basePath="H:\file";
+        String name = file.getOriginalFilename();
+        String[] names = name.split("\\.");
+        if (null == names || names.length == 0) {
+            throw new WafException("", "文件错误", HttpStatus.NOT_ACCEPTABLE);
+        } else if (Arrays.asList(filePostfixes).contains(names[names.length - 1])) {
+            throw new WafException("", "文件类型错误", HttpStatus.NOT_ACCEPTABLE);
+        } else {
+            ExpertInfoFileEntity expertInfoFileEntityOld = expertInfoFileRepository.findAllByName(name);
+//            StringBuffer names = new StringBuffer();
+//            if(expertInfoFileEntityOld!=null){
+//                names.append(name).append()
 //            }
-//        }
-        return ResultUtil.success();
+            String uuid = IdUtil.simpleUUID();
+            ExpertInfoFileEntity expertInfoFileEntity=new ExpertInfoFileEntity();
+            expertInfoFileEntity.setName(name);
+            expertInfoFileEntity.setPath(basePath);
+            expertInfoFileEntity.setUuid(uuid);
+            expertInfoFileEntity.setUuidFileName(uuid + "." + names[names.length - 1]);
+            try {
+                FileUtil.writeBytes(file.getBytes(),
+                        new File(basePath));
+            } catch (IOException e) {
+                throw new WafException("", "文件写入错误", HttpStatus.NOT_ACCEPTABLE);
+            }
+            return ResultUtil.success(expertInfoFileRepository.save(expertInfoFileEntity));
+        }
     }
 
-//    public JSONObject getDataById(FileEntity fileEntity) {
+//    public JSONObject getDataById(ExpertInfoFileEntity fileEntity) {
 //        if (fileEntity != null && fileEntity.getId() != null) {
 //            return ResultUtil.success(fileRepository.findById(fileEntity.getId()));
 //        } else {
@@ -102,9 +71,9 @@ public class FileService {
 //        }
 //    }
 //
-//    public JSONObject deleteDataById(FileEntity fileEntity) {
+//    public JSONObject deleteDataById(ExpertInfoFileEntity fileEntity) {
 //        if (fileEntity != null && fileEntity.getId() != null) {
-//            FileEntity fileEntity1 = fileRepository.findAllById(fileEntity.getId());
+//            ExpertInfoFileEntity fileEntity1 = fileRepository.findAllById(fileEntity.getId());
 //            if (fileEntity1 != null) {
 //                File file = new File(fileEntity1.getPath());
 //                if (file.exists() && file.isFile()) {
@@ -140,8 +109,8 @@ public class FileService {
 //        } else {
 //            pageable = PageRequest.of(fileListReq.getPage() - 1, fileListReq.getSize());
 //        }
-//        Page<FileEntity> fileEntities = fileRepository.findAll(
-//            new Specification<FileEntity>() {
+//        Page<ExpertInfoFileEntity> fileEntities = fileRepository.findAll(
+//            new Specification<ExpertInfoFileEntity>() {
 //                @Override
 //                public Predicate toPredicate(Root root, CriteriaQuery query, CriteriaBuilder cb) {
 //                    List<Predicate> predicates = new ArrayList<Predicate>();
@@ -165,9 +134,9 @@ public class FileService {
 //        return ResultUtil.pageSuccess(fileEntities);
 //    }
 //
-//    public JSONObject disposeData(FileEntity fileEntity) {
+//    public JSONObject disposeData(ExpertInfoFileEntity fileEntity) {
 //        if (fileEntity != null && fileEntity.getId() != null) {
-//            FileEntity fileEntity1 = fileRepository.findAllById(fileEntity.getId());
+//            ExpertInfoFileEntity fileEntity1 = fileRepository.findAllById(fileEntity.getId());
 //            if (fileEntity1 != null) {
 //                fileEntity1.setFileDisposeStatus(FileDisposeStatusEnum.PROCESSED);
 //                fileRepository.save(fileEntity1);
@@ -180,9 +149,9 @@ public class FileService {
 //        }
 //    }
 //
-//    public void downloadData(FileEntity fileEntity, HttpServletRequest request, HttpServletResponse response) {
+//    public void downloadData(ExpertInfoFileEntity fileEntity, HttpServletRequest request, HttpServletResponse response) {
 //        if (fileEntity != null && fileEntity.getId() != null) {
-//            FileEntity fileEntity1 = fileRepository.findAllById(fileEntity.getId());
+//            ExpertInfoFileEntity fileEntity1 = fileRepository.findAllById(fileEntity.getId());
 //            if (fileEntity1 != null) {
 //                File file = new File(fileEntity1.getPath());
 //                if (file.exists()) {
