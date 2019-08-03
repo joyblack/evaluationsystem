@@ -88,7 +88,7 @@ public class UserService {
             if(null != userEntity1){
                 throw new WafException("", "单位全称重复", HttpStatus.NOT_ACCEPTABLE);
             }
-            userEntity1 = userRepository.findAllByUnitNameAndIdNot(userEntity.getSocialCreditCode(),userEntity.getId());
+            userEntity1 = userRepository.findAllBySocialCreditCodeAndIdNot(userEntity.getSocialCreditCode(),userEntity.getId());
             if(null != userEntity1){
                 throw new WafException("", "统一社会信用代码重复", HttpStatus.NOT_ACCEPTABLE);
             }
