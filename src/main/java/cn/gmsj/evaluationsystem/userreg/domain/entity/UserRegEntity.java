@@ -1,6 +1,7 @@
 package cn.gmsj.evaluationsystem.userreg.domain.entity;
 
 import cn.gmsj.evaluationsystem.common.domain.entity.BaseEntity;
+import cn.gmsj.evaluationsystem.enums.UserDataType;
 import lombok.Data;
 import lombok.ToString;
 
@@ -20,7 +21,8 @@ public class UserRegEntity extends BaseEntity implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 
-	private  int userType;//1是专家注册 ；2是第三机构注册
+
+    private UserDataType userDataType;
 
 	private String uname;
 	@NotEmpty(message=	"不能为空")
