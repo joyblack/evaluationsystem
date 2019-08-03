@@ -1,12 +1,9 @@
 package cn.gmsj.evaluationsystem.expertdesign.service;
 
-import cn.gmsj.evaluationsystem.demo.domain.entity.DemoEntity;
-import cn.gmsj.evaluationsystem.demo.web.req.DemoReq;
 import cn.gmsj.evaluationsystem.exception.WafException;
 import cn.gmsj.evaluationsystem.expertdesign.domain.entity.ExpertSuggestEntity;
 import cn.gmsj.evaluationsystem.expertdesign.domain.repository.ExpertDesignRepository;
 import cn.gmsj.evaluationsystem.expertdesign.web.req.ExperDesignReq;
-import cn.gmsj.evaluationsystem.projectmanage.domain.entity.ProjectEntity;
 import cn.gmsj.evaluationsystem.utils.ResultUtil;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.http.HttpStatus;
