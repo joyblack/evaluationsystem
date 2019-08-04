@@ -1,8 +1,7 @@
 package cn.gmsj.evaluationsystem.user.service;
 
-import cn.gmsj.evaluationsystem.user.domain.entity.UserImageEntity;
 import cn.gmsj.evaluationsystem.user.domain.entity.UserEntity;
-import cn.gmsj.evaluationsystem.user.domain.model.ResultFile;
+import cn.gmsj.evaluationsystem.user.domain.entity.UserImageEntity;
 import cn.gmsj.evaluationsystem.user.domain.reposiory.UserImageRepository;
 import cn.gmsj.evaluationsystem.user.domain.reposiory.UserRepository;
 import cn.gmsj.evaluationsystem.utils.FileUtil;

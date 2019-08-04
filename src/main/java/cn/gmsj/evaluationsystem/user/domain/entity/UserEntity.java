@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by XiaoWen on 2019/8/3
@@ -68,6 +69,12 @@ public class UserEntity extends BaseEntity implements Serializable {
      */
     @Column(name = "business_licence")
     private String businessLicence;
+
+    /**
+     * 图片集合
+     */
+    @Transient
+    private List<UserImageEntity> userImageEntities;
 
 
 
