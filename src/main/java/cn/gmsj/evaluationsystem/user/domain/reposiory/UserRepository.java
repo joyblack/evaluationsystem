@@ -13,6 +13,14 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 public interface UserRepository extends BaseRepository<UserEntity>, JpaRepository<UserEntity, Long> {
 
+
+    /**
+     * 查询手机号重复
+     * @param phone
+     * @param id
+     * @return
+     */
+    UserEntity findAllByPhoneAndIdNot(String phone,Long id);
     /**
      * 查询身份证重复
      * @param idNumber

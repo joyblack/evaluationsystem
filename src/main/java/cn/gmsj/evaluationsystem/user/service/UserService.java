@@ -8,12 +8,10 @@ import cn.gmsj.evaluationsystem.utils.CheckIdNumberUtil;
 import cn.gmsj.evaluationsystem.utils.MD5Util;
 import cn.gmsj.evaluationsystem.utils.ResultUtil;
 import cn.gmsj.evaluationsystem.utils.StringUtil;
-import cn.gmsj.evaluationsystem.utils.UpdateUtil;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import java.util.Date;
 
 /**
  * Created by XiaoWen on 2019/8/3
@@ -31,15 +29,13 @@ public class UserService {
         if (null == userEntity.getId()) {
             userEntity.setId(0L);
         } else {
-            UpdateUtil.copyProperties(userRepository.findAllById(userEntity.getId()), userEntity);
-            userEntity.setUpdateTime(new Date());
+            throw new WafException("", "无效注册的操作", HttpStatus.NOT_ACCEPTABLE);
         }
+
         if(StringUtil.isEmpty(userEntity.getAffirmPassword())){
             return ResultUtil.error("确认密码为空");
         }
-//        if(StringUtil.isEmpty(userEntity.getPhoneCode())){
-//            return ResultUtil.error("短信注册码为空");
-//        }
+
         if(!StringUtil.equals(userEntity.getPassword(),userEntity.getAffirmPassword())){
             throw new WafException("", "密码输入不一致", HttpStatus.NOT_ACCEPTABLE);
         }
@@ -50,6 +46,7 @@ public class UserService {
          * 判断重复使用
          */
         UserEntity userEntity1 = null;
+        userEntity1 = userRepository.findAllByPhoneAndIdNot(userEntity.getPhone(),userEntity.getId());
         if(StringUtil.equals(userEntity.getUserDataType().getName(), UserDataType.SPECIALIST.getName())){
             if(StringUtil.isEmpty(userEntity.getName())){
                 return ResultUtil.error("姓名为空");
