@@ -11,22 +11,24 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.Date;
 
+/**
+ * 审查记录实体类
+ */
 @Data
 @ToString
-@Entity(name = "all_exper_suggest")
-public class ExpertSuggestEntity extends BaseEntity implements Serializable {
+@Entity(name = "all_examine_record")
+public class ExamineEntity extends BaseEntity implements Serializable {
 
 
-    private static final long serialVersionUID = -6984004830277560755L;
-
-    private String experSuggest;//专家建议
-
-   // @NotNull(message = "不能为空")
-    @JoinColumn(name = "positional_type_id")
+    @JoinColumn(name = "project_id")
     @ManyToOne(cascade = {}, fetch = FetchType.EAGER)
     private ProjectEntity projectEntity;
 
+    @NotNull(message= "审查意见不为空")
+    private String examineSuggest;//审查意见
 
+    private Date examineTime;//审查时间
 
 }
