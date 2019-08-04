@@ -1,6 +1,7 @@
 package cn.gmsj.evaluationsystem.user.domain.entity;
 
 import cn.gmsj.evaluationsystem.common.domain.entity.BaseEntity;
+import cn.gmsj.evaluationsystem.enums.UserDataType;
 import lombok.Data;
 import lombok.ToString;
 
@@ -69,6 +70,11 @@ public class UserEntity extends BaseEntity implements Serializable {
      */
     @Column(name = "business_licence")
     private String businessLicence;
+
+    /**
+     * 用户数据类型
+     */
+    private UserDataType userDataType;
 
     /**
      * 图片集合
