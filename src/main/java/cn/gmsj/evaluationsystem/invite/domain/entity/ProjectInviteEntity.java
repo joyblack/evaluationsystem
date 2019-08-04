@@ -72,5 +72,6 @@ public class ProjectInviteEntity extends BaseEntity implements Serializable {
     /**
      * 邀请内容
      */
+    @Transient
     private String inviteContent;
 }

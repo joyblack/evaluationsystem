@@ -65,6 +65,11 @@ public class ProjectInviteService {
             if (userEntity != null) {
                 Pageable pageable = PageRequest.of(projectInviteListReq.getPage() - 1, projectInviteListReq.getSize());
                 Page<ProjectInviteEntity> projectInviteEntities = projectInviteRepository.findAllByUser(userEntity, pageable);
+                for (ProjectInviteEntity projectInviteEntity : projectInviteEntities.getContent()) {
+                    projectInviteEntity.setInviteContent("[参与抽取的局]和[被抽取的第三方机构]邀请您参加" +
+                            (projectInviteEntity.getProject() != null ? projectInviteEntity.getProject().getProjectName() : null) +
+                            (projectInviteEntity.getReviewType() != null ? projectInviteEntity.getReviewType().getName() : null));
+                }
                 return ResultUtil.pageSuccess(projectInviteEntities.getContent(), projectInviteEntities.getTotalElements());
             } else {
                 throw new WafException("", "用户信息不存在", HttpStatus.NOT_ACCEPTABLE);
