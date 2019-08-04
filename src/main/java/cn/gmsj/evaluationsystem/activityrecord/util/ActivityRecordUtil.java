@@ -38,14 +38,18 @@ public class ActivityRecordUtil {
         stringBuffer.append(userEntity1.getUserDataType().getName());
         if(StringUtil.equals(userEntity1.getUserDataType().getName(),UserDataType.SPECIALIST.getName())){
             stringBuffer.append(userEntity1.getName()+"("+userEntity1.getIdNumber()+")");
-        }else{
+        }else if(StringUtil.equals(userEntity1.getUserDataType().getName(),UserDataType.THIRD_PARTY.getName())){
             stringBuffer.append(userEntity1.getUnitName());
+        }else{
+            stringBuffer.append(userEntity1.getUserDataType().getName() + userEntity1.getName());
         }
         stringBuffer.append(activityRecordType.getName()+"了");
         if(StringUtil.equals(userEntity1.getUserDataType().getName(),UserDataType.SPECIALIST.getName())){
-            stringBuffer.append(userEntity2.getName()+"("+userEntity2.getIdNumber()+")");
+            stringBuffer.append(userEntity2.getName()+"("+userEntity2.getIdNumber()+")的");
+        }else if(StringUtil.equals(userEntity1.getUserDataType().getName(),UserDataType.THIRD_PARTY.getName())){
+            stringBuffer.append(userEntity2.getUnitName()+"的");
         }else{
-            stringBuffer.append(userEntity2.getUnitName());
+            stringBuffer.append(userEntity1.getUserDataType().getName() + userEntity1.getName()+"的");
         }
         stringBuffer.append(activityRecord.getName());
         message = stringBuffer.toString();
@@ -87,8 +91,10 @@ public class ActivityRecordUtil {
         StringBuffer stringBuffer = new StringBuffer();
         if(StringUtil.equals(userEntity.getUserDataType().getName(),UserDataType.SPECIALIST.getName())){
             stringBuffer.append(userEntity.getName()+"("+userEntity.getIdNumber()+")");
-        }else{
+        }else if(StringUtil.equals(userEntity.getUserDataType().getName(),UserDataType.THIRD_PARTY.getName())){
             stringBuffer.append(userEntity.getUnitName());
+        }else{
+            stringBuffer.append(userEntity.getUserDataType().getName() + userEntity.getName());
         }
         stringBuffer.append(activityRecordType.getName()+"了");
         stringBuffer.append(activityRecord.getName());

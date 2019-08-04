@@ -40,7 +40,7 @@ jwtparam:
   TTLMillis: 3600000
   base64Security: JXU4RDM1JXU3MTY0JXU4QkJFJXU4QkEx1
 
-file.path: D:&&file
+file.path: E:&&file
 image.format: jpg;JPG;bmp;BMP;png;PNG
 
 

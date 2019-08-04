@@ -52,12 +52,6 @@ public class UserEntity extends BaseEntity implements Serializable {
     private String phone;
 
     /**
-     * 手机号验证code
-     */
-    @Transient
-    private String phoneCode;
-
-    /**
      * 单位名称
      */
     @Column(name = "unit_name")
