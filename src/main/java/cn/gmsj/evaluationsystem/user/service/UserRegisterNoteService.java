@@ -1,5 +1,6 @@
 package cn.gmsj.evaluationsystem.user.service;
 
+import cn.gmsj.evaluationsystem.common.constant.SystemConstant;
 import cn.gmsj.evaluationsystem.exception.WafException;
 import cn.gmsj.evaluationsystem.user.domain.model.UserRegisterNote;
 import cn.gmsj.evaluationsystem.user.domain.reposiory.UserRepository;
@@ -36,7 +37,7 @@ public class UserRegisterNoteService {
                 throw new WafException("", "该手机号已被注册", HttpStatus.NOT_ACCEPTABLE);
             }
             userRegisterNote.setAuthCode(RandomUtil.sixAuthCode());
-            userRegisterNoteRedisService.put(userRegisterNote.getPhone(), userRegisterNote, 1800);
+            userRegisterNoteRedisService.put(userRegisterNote.getPhone(), userRegisterNote, SystemConstant.NOTE_VALID_TIME);
             return ResultUtil.success();
         }
     }
