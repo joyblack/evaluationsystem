@@ -1,7 +1,12 @@
 package cn.gmsj.evaluationsystem.expertinfo.service;
 
+import cn.gmsj.evaluationsystem.activityrecord.domain.repository.ActivityRecordRepository;
+import cn.gmsj.evaluationsystem.activityrecord.enums.ActivityRecord;
+import cn.gmsj.evaluationsystem.activityrecord.enums.ActivityRecordType;
+import cn.gmsj.evaluationsystem.activityrecord.util.ActivityRecordUtil;
 import cn.gmsj.evaluationsystem.exception.WafException;
 import cn.gmsj.evaluationsystem.expertinfo.domain.entity.*;
+import cn.gmsj.evaluationsystem.expertinfo.domain.enums.ExpertInfoType;
 import cn.gmsj.evaluationsystem.expertinfo.domain.repository.*;
 import cn.gmsj.evaluationsystem.expertinfo.web.req.ExpertInfoReq;
 import cn.gmsj.evaluationsystem.expertinfo.web.res.DeclareMajorArrayRes;
@@ -58,8 +63,10 @@ public class ExpertInfoService {
 
     @Autowired
     private ExpertInfoFileRepository expertInfoFileRepository;
+    @Autowired
+    private ActivityRecordRepository activityRecordRepository;
 
-    public JSONObject updateData(ExpertInfoEntity expertInfoEntity) {
+    public JSONObject updateData(ExpertInfoEntity expertInfoEntity,UserEntity userEntity) {
         if (null == expertInfoEntity.getId()) {
             expertInfoEntity.setId(0L);
         } else {
@@ -75,6 +82,9 @@ public class ExpertInfoService {
         if (expertInfoEntities != null && expertInfoEntities.size() > 0) {
             throw new WafException("", "手机重复", HttpStatus.NOT_ACCEPTABLE);
         }
+//        if(ExpertInfoType.COMMIT.equals(expertInfoEntity.getExpertInfoType())){
+//            ActivityRecordUtil.createActivityRecordByOneself(userEntity,ActivityRecord.STORAGE_APPLICATION, ActivityRecordType.SUBMIT,activityRecordRepository);
+//        }
         return ResultUtil.success(expertInfoRepository.save(expertInfoEntity));
     }
 
@@ -175,20 +185,20 @@ public class ExpertInfoService {
             expertInfoRes.setAcademicSituation(expertInfoEntity.getAcademicSituation());
             expertInfoRes.setReward(expertInfoEntity.getReward());
             expertInfoRes.setResearchFinding(expertInfoEntity.getResearchFinding());
-            List<ExpertInfoImageEntity> expertInfoImageEntityList=expertInfoImageRepository.findAllByUserEntityOrderByCreateTimeDesc(userEntity);
-            if(ObjectUtils.isEmpty(expertInfoImageEntityList)){
-                expertInfoRes.setExpertInfoImageEntity(new ExpertInfoImageEntity());
-            }else {
-                expertInfoRes.setExpertInfoImageEntity(expertInfoImageEntityList.get(0));
-            }
-            List<ExpertInfoFileEntity>  expertInfoFileEntityList=expertInfoFileRepository.findAllByOrderByCreateTimeDesc();
-            if(ObjectUtils.isEmpty(expertInfoFileEntityList)){
-                expertInfoFileEntityList=new ArrayList<>();
-                expertInfoRes.setExpertInfoFileEntityList(expertInfoFileEntityList);
-            }else {
-                expertInfoRes.setExpertInfoFileEntityList(expertInfoFileEntityList);
-            }
             expertInfoRes.setExpertInfoType(expertInfoEntity.getExpertInfoType());
+        }
+        List<ExpertInfoImageEntity> expertInfoImageEntityList=expertInfoImageRepository.findAllByUserEntityOrderByCreateTimeDesc(userEntity);
+        if(ObjectUtils.isEmpty(expertInfoImageEntityList)){
+            expertInfoRes.setExpertInfoImageEntity(new ExpertInfoImageEntity());
+        }else {
+            expertInfoRes.setExpertInfoImageEntity(expertInfoImageEntityList.get(0));
+        }
+        List<ExpertInfoFileEntity>  expertInfoFileEntityList=expertInfoFileRepository.findAllByOrderByCreateTimeDesc();
+        if(ObjectUtils.isEmpty(expertInfoFileEntityList)){
+            expertInfoFileEntityList=new ArrayList<>();
+            expertInfoRes.setExpertInfoFileEntityList(expertInfoFileEntityList);
+        }else {
+            expertInfoRes.setExpertInfoFileEntityList(expertInfoFileEntityList);
         }
         return ResultUtil.success(expertInfoRes);
     }

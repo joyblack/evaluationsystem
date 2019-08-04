@@ -28,12 +28,16 @@ public class ExpertInfoController {
     @PostMapping(
             value = "/updateData",
             produces = {"application/json;charset=UTF-8"})
-    public Object updateData(@RequestBody @Valid ExpertInfoEntity expertInfoEntity, BindingResult bindingResult) {
+    public Object updateData(@RequestBody @Valid ExpertInfoEntity expertInfoEntity, BindingResult bindingResult,HttpServletRequest req) {
+        UserEntity userEntity= TokenUtil.getUser(req);
+        if(userEntity==null){
+            throw new WafException("","用户信息不存在", HttpStatus.NOT_ACCEPTABLE);
+        }
         if (bindingResult.hasErrors()) {
             throw new WafException(
                     "", bindingResult.getFieldError().getDefaultMessage(), HttpStatus.NOT_ACCEPTABLE);
         } else {
-            return expertInfoService.updateData(expertInfoEntity);
+            return expertInfoService.updateData(expertInfoEntity,userEntity);
         }
     }
 
