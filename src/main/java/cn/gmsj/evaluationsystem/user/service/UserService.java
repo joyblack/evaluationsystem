@@ -43,13 +43,13 @@ public class UserService {
             throw new WafException("", "密码输入不一致", HttpStatus.NOT_ACCEPTABLE);
         }
         /**
-         * 判断短信注册码是否一致   --待验证
-         */
-        /**
          * 判断重复使用
          */
         UserEntity userEntity1 = null;
         userEntity1 = userRepository.findAllByPhoneAndIdNot(userEntity.getPhone(),userEntity.getId());
+        if(null != userEntity1){
+            throw new WafException("", "该手机号已被注册", HttpStatus.NOT_ACCEPTABLE);
+        }
         if(StringUtil.equals(userEntity.getUserDataType().getName(), UserDataType.SPECIALIST.getName())){
             if(StringUtil.isEmpty(userEntity.getName())){
                 return ResultUtil.error("姓名为空");
@@ -60,7 +60,7 @@ public class UserService {
             /**
              * 验证身份证号
              */
-            if(!CheckIdNumberUtil.isIDNumber(userEntity.getIdNumber())){
+            if(!IdNumberUtil.isIDNumber(userEntity.getIdNumber())){
                 throw new WafException("", "身份证号错误", HttpStatus.NOT_ACCEPTABLE);
             }
             userEntity1 = userRepository.findAllByIdNumberAndIdNot(userEntity.getIdNumber(),userEntity.getId());

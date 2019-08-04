@@ -1,11 +1,27 @@
 package cn.gmsj.evaluationsystem.utils;
 
+import cn.gmsj.evaluationsystem.expertinfo.domain.enums.SexType;
+
 /**
  * Created by XiaoWen on 2019/8/3
  * 身份证验证
  */
-public class CheckIdNumberUtil {
+public class IdNumberUtil {
 
+    /**
+     * 15位身份证号
+     */
+    private static final Integer FIFTEEN_ID_CARD = 15;
+    /**
+     * 18位身份证号
+     */
+    private static final Integer EIGHTEEN_ID_CARD = 18;
+
+    /**
+     * 检测是否是身份证
+     * @param IDNumber
+     * @return
+     */
     public static boolean isIDNumber(String IDNumber) {
         if (IDNumber == null || "".equals(IDNumber)) {
             return false;
@@ -68,4 +84,67 @@ public class CheckIdNumberUtil {
         }
         return flage;
     }
+
+    /**
+     * 根据身份证号获取性别
+     * @param idNumber
+     * @return
+     */
+    public static SexType getSex(String idNumber){
+        SexType sexType = null;
+        if (IdNumberUtil.isIDNumber(idNumber)){
+            //15位身份证号
+            if (idNumber.length() == FIFTEEN_ID_CARD){
+                if (Integer.parseInt(idNumber.substring(14, 15)) % 2 == 0) {
+                    sexType = SexType.WOM;
+                } else {
+                    sexType = SexType.MAN;
+                }
+                //18位身份证号
+            }else if(idNumber.length() == EIGHTEEN_ID_CARD){
+                // 判断性别
+                if (Integer.parseInt(idNumber.substring(16).substring(0, 1)) % 2 == 0) {
+                    sexType = SexType.WOM;
+                } else {
+                    sexType = SexType.MAN;
+                }
+            }
+        }
+        return sexType;
+    }
+
+    /**
+     * 根据身份证号获取出生日期 yyyy-MM-dd
+     * @param idNumber
+     * @return
+     */
+    public static String getBirthday(String idNumber){
+        String birthday="";
+        String year="";
+        String month="";
+        String day="";
+        if (IdNumberUtil.isIDNumber(idNumber)){
+            //15位身份证号
+            if (idNumber.length() == FIFTEEN_ID_CARD){
+                // 身份证上的年份(15位身份证为1980年前的)
+                year = "19" + idNumber.substring(6, 8);
+                //身份证上的月份
+                month = idNumber.substring(8, 10);
+                //身份证上的日期
+                day= idNumber.substring(10, 12);
+                //18位身份证号
+            }else if(idNumber.length() == EIGHTEEN_ID_CARD){
+                // 身份证上的年份
+                year = idNumber.substring(6).substring(0, 4);
+                // 身份证上的月份
+                month = idNumber.substring(10).substring(0, 2);
+                //身份证上的日期
+                day=idNumber.substring(12).substring(0,2);
+            }
+            birthday=year+"-"+month+"-"+day+"-";
+        }
+        return birthday;
+    }
+
+
 }
