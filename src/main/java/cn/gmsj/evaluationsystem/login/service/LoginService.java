@@ -41,7 +41,7 @@ public class LoginService {
             }
             LoginNote loginNote = loginNoteRedisService.get(loginReq.getPhone());
             if (loginNote != null) {
-                if (loginNote.getPhone().equals(loginReq.getAuthCode())) {
+                if (loginNote.getAuthCode().equals(loginReq.getAuthCode())) {
                     UserEntity userEntity = userRepository.findAllByPhone(loginNote.getPhone());
                     if (userEntity != null) {
                         loginNoteRedisService.remove(loginNote.getPhone());
