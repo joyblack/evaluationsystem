@@ -14,6 +14,11 @@ spring:
     show-sql: true
     generate-ddl: true
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    password: 123456
+    timeout: 1000ms
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
@@ -27,8 +32,8 @@ spring:
   servlet:
     multipart:
       enabled: true
-      max-file-size: 100
-      max-request-size: 100
+      max-file-size: 100Mb
+      max-request-size: 100Mb
 jwtparam:
   issuer: ec8b63c05f999a15a8c8567002a560a8
   audience: 541bee7d2a922cc0a81ff4ca3c23f4af
