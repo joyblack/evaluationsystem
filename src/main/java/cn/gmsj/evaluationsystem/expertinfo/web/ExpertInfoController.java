@@ -47,7 +47,7 @@ public class ExpertInfoController {
         if(userEntity==null){
             throw new WafException("","用户信息不存在", HttpStatus.NOT_ACCEPTABLE);
         }
-        return expertInfoService.getExpertInfo(expertInfoReq);
+        return expertInfoService.getExpertInfo(expertInfoReq,userEntity);
     }
 
 

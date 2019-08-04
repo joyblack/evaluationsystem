@@ -7,12 +7,14 @@ import cn.gmsj.evaluationsystem.expertinfo.web.req.ExpertInfoReq;
 import cn.gmsj.evaluationsystem.expertinfo.web.res.DeclareMajorArrayRes;
 import cn.gmsj.evaluationsystem.expertinfo.web.res.DeclareMajorListRes;
 import cn.gmsj.evaluationsystem.expertinfo.web.res.ExpertInfoRes;
+import cn.gmsj.evaluationsystem.user.domain.entity.UserEntity;
 import cn.gmsj.evaluationsystem.utils.ResultUtil;
 import cn.gmsj.evaluationsystem.utils.UpdateUtil;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 import java.util.*;
 
@@ -65,9 +67,14 @@ public class ExpertInfoService {
         return ResultUtil.success(expertInfoRepository.save(expertInfoEntity));
     }
 
-    public JSONObject getExpertInfo(ExpertInfoReq expertInfoReq) {
+    public JSONObject getExpertInfo(ExpertInfoReq expertInfoReq, UserEntity userEntity) {
+        ExpertInfoEntity expertInfoEntityOld=expertInfoRepository.findAllByIdCard(userEntity.getIdNumber());
+        if(ObjectUtils.isEmpty(expertInfoEntityOld)){
+            ExpertInfoEntity newExpertInfoEntity=new ExpertInfoEntity();
+            newExpertInfoEntity.setIdCard(userEntity.getIdNumber());
+        }
         ExpertInfoEntity expertInfoEntity = expertInfoRepository.
-                findAllByIdCardAndExpertInfoType(expertInfoReq.getIdCard(), expertInfoReq.getExpertInfoType());
+                findAllByIdCardAndExpertInfoType(userEntity.getIdNumber(), expertInfoReq.getExpertInfoType());
         PositionalTypeEntity positionalTypeEntity = positionalTypeRepository.findAllById(expertInfoEntity.getPositionalTypeEntity().getId());
         PositionalTitleEntity positionalTitleEntity = positionalTitleRepository.findAllById(expertInfoEntity.getPositionalTitleEntity().getId());
         EducationEntity educationEntity = educationRepository.findAllById(expertInfoEntity.getEducationEntity().getId());
@@ -209,26 +216,26 @@ public class ExpertInfoService {
     }
 
     public JSONObject getDeclareMajorList() {
+        List<DeclareMajorTypeEntity> declareMajorTypeEntityList=declareMajorTypeRepository.findAll();
+        Map<String,DeclareMajorTypeEntity> declareMajorTypeEntityMap=new HashMap<>();
+        for(DeclareMajorTypeEntity declareMajorTypeEntity:declareMajorTypeEntityList){
+            declareMajorTypeEntityMap.put(declareMajorTypeEntity.getDeclareMajorTypeName(),declareMajorTypeEntity);
+        }
+        Map<String,List<DeclareMajorArrayRes>> declareMajorArrayResMap=new HashMap<>();
+        List<DeclareMajorArrayRes> declareMajorArrayResList=new ArrayList<>();
         List<DeclareMajorEntity> declareMajorEntityList = declareMajorRepository.findAll();
-        List<DeclareMajorTypeEntity> declareMajorTypeEntityList = declareMajorTypeRepository.findAll();
-        JSONObject declareMajorTypeJson = new JSONObject();
-        for (DeclareMajorTypeEntity declareMajorTypeEntity : declareMajorTypeEntityList) {
-            declareMajorTypeJson.put(declareMajorTypeEntity.getId().toString(), declareMajorTypeEntity);
-        }
-        List<DeclareMajorListRes> declareMajorListResList = new ArrayList<>();
         for (DeclareMajorEntity declareMajorEntity : declareMajorEntityList) {
-            DeclareMajorTypeEntity declareMajorTypeEntity = (DeclareMajorTypeEntity) declareMajorTypeJson.
-                    get(declareMajorEntity.getDeclareMajorTypeEntity().getId().toString());
-            if (declareMajorTypeEntity == null) {
-                throw new WafException("", "申报专业类型不存在，请联系管理员", HttpStatus.NOT_ACCEPTABLE);
+            String declareMajorTypeName=declareMajorEntity.getDeclareMajorTypeEntity().getDeclareMajorTypeName();
+            declareMajorArrayResList=declareMajorArrayResMap.get(declareMajorTypeName);
+            if (declareMajorArrayResList == null) {
+                declareMajorArrayResList = new ArrayList<>();
             }
-            DeclareMajorListRes declareMajorListRes = new DeclareMajorListRes();
-            declareMajorListRes.setId(declareMajorEntity.getId());
-            declareMajorListRes.setDeclareMajorName(declareMajorEntity.getDeclareMajorName());
-            declareMajorListRes.setDeclareMajorTypeName(declareMajorTypeEntity.getDeclareMajorTypeName());
-            declareMajorListRes.setDeclareMajorTypeId(declareMajorTypeEntity.getId());
-            declareMajorListResList.add(declareMajorListRes);
+            DeclareMajorArrayRes declareMajorArrayRes = new DeclareMajorArrayRes();
+            declareMajorArrayRes.setId(declareMajorEntity.getId());
+            declareMajorArrayRes.setDeclareMajorName(declareMajorEntity.getDeclareMajorName());
+            declareMajorArrayResList.add(declareMajorArrayRes);
+            declareMajorArrayResMap.put(declareMajorTypeName, declareMajorArrayResList);
         }
-        return ResultUtil.success(declareMajorListResList);
+        return ResultUtil.success(declareMajorArrayResMap);
     }
 }

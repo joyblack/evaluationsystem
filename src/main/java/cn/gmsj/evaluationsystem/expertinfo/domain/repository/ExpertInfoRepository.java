@@ -17,4 +17,6 @@ public interface ExpertInfoRepository extends BaseRepository<ExpertInfoEntity>, 
 
     ExpertInfoEntity findAllByIdCardAndExpertInfoType(String idCard, ExpertInfoType expertInfoType);
 
+    ExpertInfoEntity findAllByIdCard(String idCard);
+
 }
