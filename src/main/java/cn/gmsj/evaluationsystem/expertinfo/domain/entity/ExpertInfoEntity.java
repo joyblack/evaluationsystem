@@ -132,9 +132,5 @@ public class ExpertInfoEntity extends BaseEntity implements Serializable {
     @Lob
     private String researchFinding; //安全生产相关工作主要业绩及研究成果
 
-    private String pictureUrl;     //照片路径。
-
-    private String materialUrl;     //上传资料路径。
-
     private ExpertInfoType expertInfoType;     //专家信息状态
 }
