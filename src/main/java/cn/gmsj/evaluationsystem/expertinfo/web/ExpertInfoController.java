@@ -28,7 +28,7 @@ public class ExpertInfoController {
     @PostMapping(
             value = "/updateData",
             produces = {"application/json;charset=UTF-8"})
-    public Object updateData(@RequestBody ExpertInfoEntity expertInfoEntity, BindingResult bindingResult) {
+    public Object updateData(@RequestBody @Valid ExpertInfoEntity expertInfoEntity, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             throw new WafException(
                     "", bindingResult.getFieldError().getDefaultMessage(), HttpStatus.NOT_ACCEPTABLE);
@@ -43,11 +43,7 @@ public class ExpertInfoController {
     @PostMapping(
             value = "/getExpertInfo",
             produces = {"application/json;charset=UTF-8"})
-    public Object getExpertInfo(@RequestBody @Valid ExpertInfoReq expertInfoReq, BindingResult bindingResult,HttpServletRequest req) {
-        if (bindingResult.hasErrors()) {
-            throw new WafException(
-                    "", bindingResult.getFieldError().getDefaultMessage(), HttpStatus.NOT_ACCEPTABLE);
-        }
+    public Object getExpertInfo(@RequestBody ExpertInfoReq expertInfoReq, HttpServletRequest req) {
         UserEntity userEntity= TokenUtil.getUser(req);
         if(userEntity==null){
             throw new WafException("","用户信息不存在", HttpStatus.NOT_ACCEPTABLE);
