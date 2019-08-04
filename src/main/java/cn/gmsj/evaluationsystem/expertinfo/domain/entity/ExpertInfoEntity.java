@@ -27,7 +27,7 @@ public class ExpertInfoEntity extends BaseEntity implements Serializable {
     @NotEmpty(message = "姓名不能为空")
     private String name;
 
-    @NotEmpty(message = "性别不能为空")
+    @NotNull(message = "性别不能为空")
     private SexType sex;
 
     @NotEmpty(message = "出生日期不能为空")
@@ -108,19 +108,19 @@ public class ExpertInfoEntity extends BaseEntity implements Serializable {
     /**
      * 所学专业
      */
-    @NotNull(message = "所学专业不能为空")
+    @NotEmpty(message = "所学专业不能为空")
     private String studyMajors;
 
     /**
      * 从事专业
      */
-    @NotNull(message = "从事专业不能为空")
+    @NotEmpty(message = "从事专业不能为空")
     private String engagedMajors;
 
     /**
      * 申报专业
      */
-    @NotNull(message = "申报专业不能为空")
+    @NotEmpty(message = "申报专业不能为空")
     private String declareMajors;
 
     @Lob

@@ -7,7 +7,12 @@ import cn.gmsj.evaluationsystem.expertinfo.web.req.ExpertInfoReq;
 import cn.gmsj.evaluationsystem.expertinfo.web.res.DeclareMajorArrayRes;
 import cn.gmsj.evaluationsystem.expertinfo.web.res.DeclareMajorListRes;
 import cn.gmsj.evaluationsystem.expertinfo.web.res.ExpertInfoRes;
+import cn.gmsj.evaluationsystem.file.domain.entity.ExpertInfoFileEntity;
+import cn.gmsj.evaluationsystem.file.domain.entity.ExpertInfoImageEntity;
+import cn.gmsj.evaluationsystem.file.domain.repository.ExpertInfoFileRepository;
+import cn.gmsj.evaluationsystem.file.domain.repository.ExpertInfoImageRepository;
 import cn.gmsj.evaluationsystem.user.domain.entity.UserEntity;
+import cn.gmsj.evaluationsystem.utils.IdNumberUtil;
 import cn.gmsj.evaluationsystem.utils.ResultUtil;
 import cn.gmsj.evaluationsystem.utils.UpdateUtil;
 import com.alibaba.fastjson.JSONObject;
@@ -48,6 +53,12 @@ public class ExpertInfoService {
     @Autowired
     private DeclareMajorTypeRepository declareMajorTypeRepository;
 
+    @Autowired
+    private ExpertInfoImageRepository expertInfoImageRepository;
+
+    @Autowired
+    private ExpertInfoFileRepository expertInfoFileRepository;
+
     public JSONObject updateData(ExpertInfoEntity expertInfoEntity) {
         if (null == expertInfoEntity.getId()) {
             expertInfoEntity.setId(0L);
@@ -68,110 +79,118 @@ public class ExpertInfoService {
     }
 
     public JSONObject getExpertInfo(ExpertInfoReq expertInfoReq, UserEntity userEntity) {
-        ExpertInfoEntity expertInfoEntityOld=expertInfoRepository.findAllByIdCard(userEntity.getIdNumber());
-        if(ObjectUtils.isEmpty(expertInfoEntityOld)){
-            ExpertInfoEntity newExpertInfoEntity=new ExpertInfoEntity();
-            newExpertInfoEntity.setIdCard(userEntity.getIdNumber());
-        }
         ExpertInfoEntity expertInfoEntity = expertInfoRepository.
                 findAllByIdCardAndExpertInfoType(userEntity.getIdNumber(), expertInfoReq.getExpertInfoType());
-        PositionalTypeEntity positionalTypeEntity = positionalTypeRepository.findAllById(expertInfoEntity.getPositionalTypeEntity().getId());
-        PositionalTitleEntity positionalTitleEntity = positionalTitleRepository.findAllById(expertInfoEntity.getPositionalTitleEntity().getId());
-        EducationEntity educationEntity = educationRepository.findAllById(expertInfoEntity.getEducationEntity().getId());
-        //获取所学专业
-        List<Long> studyMajorsStr = new ArrayList<>();
-        if (expertInfoEntity.getStudyMajors().contains("-")) {
-            String[] studyMajors = expertInfoEntity.getStudyMajors().split("-");
-            for (int i = 0; i < studyMajors.length; i++) {
-                studyMajorsStr.add(new Long(studyMajors[i]));
-            }
-        } else {
-            studyMajorsStr.add(new Long(expertInfoEntity.getStudyMajors()));
-        }
-        List<StudyMajorEntity> studyMajorEntityList = studyMajorRepository.findAllByIdIn(studyMajorsStr);
-        //获取从事专业
-        List<Long> engagedMajorsStr = new ArrayList<>();
-        if (expertInfoEntity.getStudyMajors().contains("-")) {
-            String[] engagedMajors = expertInfoEntity.getEngagedMajors().split("-");
-            for (int i = 0; i < engagedMajors.length; i++) {
-                engagedMajorsStr.add(new Long(engagedMajors[i]));
-            }
-        } else {
-            engagedMajorsStr.add(new Long(expertInfoEntity.getEngagedMajors()));
-        }
-        List<EngagedMajorEntity> engagedMajorEntityList = engagedMajorRepository.findAllByIdIn(engagedMajorsStr);
-        //获取申报专业
-        List<Long> declareMajorsStr = new ArrayList<>();
-        if (expertInfoEntity.getStudyMajors().contains("-")) {
-            String[] declareMajors = expertInfoEntity.getDeclareMajors().split("-");
-            for (int i = 0; i < declareMajors.length; i++) {
-                declareMajorsStr.add(new Long(declareMajors[i]));
-            }
-        } else {
-            declareMajorsStr.add(new Long(expertInfoEntity.getDeclareMajors()));
-        }
-        List<String> declareMajorTypeNames = new ArrayList<>();
-        List<DeclareMajorTypeEntity> declareMajorTypeEntityList = declareMajorTypeRepository.findAll();
-        for (DeclareMajorTypeEntity declareMajorTypeEntity : declareMajorTypeEntityList) {
-            declareMajorTypeNames.add(declareMajorTypeEntity.getDeclareMajorTypeName());
-        }
-        List<DeclareMajorEntity> declareMajorEntityList = declareMajorRepository.findAllByIdIn(declareMajorsStr);
-        Map<String, List<DeclareMajorArrayRes>> decMap = new HashMap<>();
-        List<DeclareMajorArrayRes> declareMajorArrayResList = new ArrayList<>();
-        for (DeclareMajorEntity declareMajorEntity : declareMajorEntityList) {
-            String declareMajorTypeName = declareMajorEntity.getDeclareMajorTypeEntity().getDeclareMajorTypeName();
-            declareMajorArrayResList = decMap.get(declareMajorTypeName);
-            if (declareMajorArrayResList == null) {
-                declareMajorArrayResList = new ArrayList<>();
-            }
-            DeclareMajorArrayRes declareMajorArrayRes = new DeclareMajorArrayRes();
-            declareMajorArrayRes.setId(declareMajorEntity.getId());
-            declareMajorArrayRes.setDeclareMajorName(declareMajorEntity.getDeclareMajorName());
-            declareMajorArrayResList.add(declareMajorArrayRes);
-            decMap.put(declareMajorTypeName, declareMajorArrayResList);
-        }
-        for (int i = 0; i < declareMajorTypeNames.size(); i++) {
-            String typeName = declareMajorTypeNames.get(i);
-            List<DeclareMajorArrayRes> oldDeclareMajorArrayRes = decMap.get(typeName);
-            if (oldDeclareMajorArrayRes == null) {
-                oldDeclareMajorArrayRes = new ArrayList<>();
-                decMap.put(typeName, oldDeclareMajorArrayRes);
-            }
-        }
         ExpertInfoRes expertInfoRes = new ExpertInfoRes();
-        expertInfoRes.setId(expertInfoEntity.getId());
-        expertInfoRes.setName(expertInfoEntity.getName());
-        expertInfoRes.setSex(expertInfoEntity.getSex());
-        expertInfoRes.setBirthday(expertInfoEntity.getBirthday());
-        expertInfoRes.setPhone(expertInfoEntity.getPhone());
-        expertInfoRes.setTelephone(expertInfoEntity.getTelephone());
-        expertInfoRes.setIdCard(expertInfoEntity.getIdCard());
-        expertInfoRes.setIsWork(expertInfoEntity.getIsWork());
-        expertInfoRes.setCompanyName(expertInfoEntity.getCompanyName());
-        expertInfoRes.setCompanyAddress(expertInfoEntity.getCompanyAddress());
-        expertInfoRes.setProvince(expertInfoEntity.getProvince());
-        expertInfoRes.setArea(expertInfoEntity.getArea());
-        expertInfoRes.setCounty(expertInfoEntity.getCounty());
-        expertInfoRes.setPostalCode(expertInfoEntity.getPostalCode());
-        expertInfoRes.setDepartment(expertInfoEntity.getDepartment());
-        expertInfoRes.setPositionalTypeEntity(positionalTypeEntity);
-        expertInfoRes.setPositionalTitleEntity(positionalTitleEntity);
-        expertInfoRes.setCompanyTelep(expertInfoEntity.getCompanyTelep());
-        expertInfoRes.setFax(expertInfoEntity.getFax());
-        expertInfoRes.setMailbox(expertInfoEntity.getMailbox());
-        expertInfoRes.setSchool(expertInfoEntity.getSchool());
-        expertInfoRes.setEducationEntity(educationEntity);
-        expertInfoRes.setSeniority(expertInfoEntity.getSeniority());
-        expertInfoRes.setStudyMajors(studyMajorEntityList);
-        expertInfoRes.setEngagedMajors(engagedMajorEntityList);
-        expertInfoRes.setDeclareMajors(decMap);
-        expertInfoRes.setResume(expertInfoEntity.getResume());
-        expertInfoRes.setAcademicSituation(expertInfoEntity.getAcademicSituation());
-        expertInfoRes.setReward(expertInfoEntity.getReward());
-        expertInfoRes.setResearchFinding(expertInfoEntity.getResearchFinding());
-        expertInfoRes.setPictureUrl(expertInfoEntity.getPictureUrl());
-        expertInfoRes.setMaterialUrl(expertInfoEntity.getMaterialUrl());
-        expertInfoRes.setExpertInfoType(expertInfoEntity.getExpertInfoType());
+        expertInfoRes.setName(userEntity.getName());
+        expertInfoRes.setSex(IdNumberUtil.getSex(userEntity.getIdNumber()));
+        expertInfoRes.setBirthday(IdNumberUtil.getBirthday(userEntity.getIdNumber()));
+        expertInfoRes.setPhone(userEntity.getPhone());
+        expertInfoRes.setIdCard(userEntity.getIdNumber());
+        if(!ObjectUtils.isEmpty(expertInfoEntity)){
+            PositionalTypeEntity positionalTypeEntity = positionalTypeRepository.findAllById(expertInfoEntity.getPositionalTypeEntity().getId());
+            PositionalTitleEntity positionalTitleEntity = positionalTitleRepository.findAllById(expertInfoEntity.getPositionalTitleEntity().getId());
+            EducationEntity educationEntity = educationRepository.findAllById(expertInfoEntity.getEducationEntity().getId());
+            //获取所学专业
+            List<Long> studyMajorsStr = new ArrayList<>();
+            if (expertInfoEntity.getStudyMajors().contains("-")) {
+                String[] studyMajors = expertInfoEntity.getStudyMajors().split("-");
+                for (int i = 0; i < studyMajors.length; i++) {
+                    studyMajorsStr.add(new Long(studyMajors[i]));
+                }
+            } else {
+                studyMajorsStr.add(new Long(expertInfoEntity.getStudyMajors()));
+            }
+            List<StudyMajorEntity> studyMajorEntityList = studyMajorRepository.findAllByIdIn(studyMajorsStr);
+            //获取从事专业
+            List<Long> engagedMajorsStr = new ArrayList<>();
+            if (expertInfoEntity.getStudyMajors().contains("-")) {
+                String[] engagedMajors = expertInfoEntity.getEngagedMajors().split("-");
+                for (int i = 0; i < engagedMajors.length; i++) {
+                    engagedMajorsStr.add(new Long(engagedMajors[i]));
+                }
+            } else {
+                engagedMajorsStr.add(new Long(expertInfoEntity.getEngagedMajors()));
+            }
+            List<EngagedMajorEntity> engagedMajorEntityList = engagedMajorRepository.findAllByIdIn(engagedMajorsStr);
+            //获取申报专业
+            List<Long> declareMajorsStr = new ArrayList<>();
+            if (expertInfoEntity.getStudyMajors().contains("-")) {
+                String[] declareMajors = expertInfoEntity.getDeclareMajors().split("-");
+                for (int i = 0; i < declareMajors.length; i++) {
+                    declareMajorsStr.add(new Long(declareMajors[i]));
+                }
+            } else {
+                declareMajorsStr.add(new Long(expertInfoEntity.getDeclareMajors()));
+            }
+            List<String> declareMajorTypeNames = new ArrayList<>();
+            List<DeclareMajorTypeEntity> declareMajorTypeEntityList = declareMajorTypeRepository.findAll();
+            for (DeclareMajorTypeEntity declareMajorTypeEntity : declareMajorTypeEntityList) {
+                declareMajorTypeNames.add(declareMajorTypeEntity.getDeclareMajorTypeName());
+            }
+            List<DeclareMajorEntity> declareMajorEntityList = declareMajorRepository.findAllByIdIn(declareMajorsStr);
+            Map<String, List<DeclareMajorArrayRes>> decMap = new HashMap<>();
+            List<DeclareMajorArrayRes> declareMajorArrayResList = new ArrayList<>();
+            for (DeclareMajorEntity declareMajorEntity : declareMajorEntityList) {
+                String declareMajorTypeName = declareMajorEntity.getDeclareMajorTypeEntity().getDeclareMajorTypeName();
+                declareMajorArrayResList = decMap.get(declareMajorTypeName);
+                if (declareMajorArrayResList == null) {
+                    declareMajorArrayResList = new ArrayList<>();
+                }
+                DeclareMajorArrayRes declareMajorArrayRes = new DeclareMajorArrayRes();
+                declareMajorArrayRes.setId(declareMajorEntity.getId());
+                declareMajorArrayRes.setDeclareMajorName(declareMajorEntity.getDeclareMajorName());
+                declareMajorArrayResList.add(declareMajorArrayRes);
+                decMap.put(declareMajorTypeName, declareMajorArrayResList);
+            }
+            for (int i = 0; i < declareMajorTypeNames.size(); i++) {
+                String typeName = declareMajorTypeNames.get(i);
+                List<DeclareMajorArrayRes> oldDeclareMajorArrayRes = decMap.get(typeName);
+                if (oldDeclareMajorArrayRes == null) {
+                    oldDeclareMajorArrayRes = new ArrayList<>();
+                    decMap.put(typeName, oldDeclareMajorArrayRes);
+                }
+            }
+            expertInfoRes.setId(expertInfoEntity.getId());
+            expertInfoRes.setTelephone(expertInfoEntity.getTelephone());
+            expertInfoRes.setIsWork(expertInfoEntity.getIsWork());
+            expertInfoRes.setCompanyName(expertInfoEntity.getCompanyName());
+            expertInfoRes.setCompanyAddress(expertInfoEntity.getCompanyAddress());
+            expertInfoRes.setProvince(expertInfoEntity.getProvince());
+            expertInfoRes.setArea(expertInfoEntity.getArea());
+            expertInfoRes.setCounty(expertInfoEntity.getCounty());
+            expertInfoRes.setPostalCode(expertInfoEntity.getPostalCode());
+            expertInfoRes.setDepartment(expertInfoEntity.getDepartment());
+            expertInfoRes.setPositionalTypeEntity(positionalTypeEntity);
+            expertInfoRes.setPositionalTitleEntity(positionalTitleEntity);
+            expertInfoRes.setCompanyTelep(expertInfoEntity.getCompanyTelep());
+            expertInfoRes.setFax(expertInfoEntity.getFax());
+            expertInfoRes.setMailbox(expertInfoEntity.getMailbox());
+            expertInfoRes.setSchool(expertInfoEntity.getSchool());
+            expertInfoRes.setEducationEntity(educationEntity);
+            expertInfoRes.setSeniority(expertInfoEntity.getSeniority());
+            expertInfoRes.setStudyMajors(studyMajorEntityList);
+            expertInfoRes.setEngagedMajors(engagedMajorEntityList);
+            expertInfoRes.setDeclareMajors(decMap);
+            expertInfoRes.setResume(expertInfoEntity.getResume());
+            expertInfoRes.setAcademicSituation(expertInfoEntity.getAcademicSituation());
+            expertInfoRes.setReward(expertInfoEntity.getReward());
+            expertInfoRes.setResearchFinding(expertInfoEntity.getResearchFinding());
+            List<ExpertInfoImageEntity> expertInfoImageEntityList=expertInfoImageRepository.findAllByOrderByCreateTimeDesc();
+            if(ObjectUtils.isEmpty(expertInfoImageEntityList)){
+                expertInfoRes.setExpertInfoImageEntity(new ExpertInfoImageEntity());
+            }else {
+                expertInfoRes.setExpertInfoImageEntity(expertInfoImageEntityList.get(0));
+            }
+            List<ExpertInfoFileEntity>  expertInfoFileEntityList=expertInfoFileRepository.findAllByOrderByCreateTimeDesc();
+            if(ObjectUtils.isEmpty(expertInfoFileEntityList)){
+                expertInfoFileEntityList=new ArrayList<>();
+                expertInfoRes.setExpertInfoFileEntityList(expertInfoFileEntityList);
+            }else {
+                expertInfoRes.setExpertInfoFileEntityList(expertInfoFileEntityList);
+            }
+            expertInfoRes.setExpertInfoType(expertInfoEntity.getExpertInfoType());
+        }
         return ResultUtil.success(expertInfoRes);
     }
 

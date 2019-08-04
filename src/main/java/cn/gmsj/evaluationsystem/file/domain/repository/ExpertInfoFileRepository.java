@@ -19,5 +19,7 @@ public interface ExpertInfoFileRepository extends BaseRepository<ExpertInfoFileE
 
     ExpertInfoFileEntity findAllByUuid(String uuid);
 
+    List<ExpertInfoFileEntity> findAllByOrderByCreateTimeDesc();
+
 
 }
