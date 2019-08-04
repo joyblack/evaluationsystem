@@ -29,7 +29,8 @@ public class AuthorizeAspect {
     @Autowired
     private JwtParamConfig jwtParamConfig;
 
-    @Pointcut("execution(public * cn.gmsj.evaluationsystem.*.web.*.*(..))")
+    @Pointcut("execution(public * cn.gmsj.evaluationsystem.*.web.*.*(..))" +
+            "&&!execution(public * cn.gmsj.evaluationsystem.login.web.LoginController.*(..))")
     public void auth() {
     }
 
