@@ -3,6 +3,7 @@ package cn.gmsj.evaluationsystem.examine.service;
 import cn.gmsj.evaluationsystem.examine.domain.entity.ExamineEntity;
 import cn.gmsj.evaluationsystem.examine.domain.repository.ExamineRepository;
 import cn.gmsj.evaluationsystem.examine.web.req.ExamineListReq;
+import cn.gmsj.evaluationsystem.examine.web.req.ExamineReq;
 import cn.gmsj.evaluationsystem.exception.WafException;
 import cn.gmsj.evaluationsystem.invite.domain.entity.ProjectInviteEntity;
 import cn.gmsj.evaluationsystem.invite.domain.repository.ProjectInviteRepository;
@@ -59,6 +60,14 @@ public class ExamineService {
         }
         examineRepository.save(examineEntity);
         return ResultUtil.success();
+    }
+
+    public JSONObject getById(ExamineReq examineReq){
+        ExamineEntity examineEntity = examineRepository.findAllById(examineReq.getId());
+        if(null == examineEntity){
+            throw new WafException("", "审查信息不存在", HttpStatus.NOT_ACCEPTABLE);
+        }
+        return ResultUtil.success(examineEntity);
     }
 
     public JSONObject getAll(ExamineListReq examineListReq, HttpServletRequest request) {

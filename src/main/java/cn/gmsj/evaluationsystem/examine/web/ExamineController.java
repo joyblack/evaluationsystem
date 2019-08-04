@@ -4,6 +4,7 @@ import cn.gmsj.evaluationsystem.common.constant.SystemConstant;
 import cn.gmsj.evaluationsystem.examine.domain.entity.ExamineEntity;
 import cn.gmsj.evaluationsystem.examine.service.ExamineService;
 import cn.gmsj.evaluationsystem.examine.web.req.ExamineListReq;
+import cn.gmsj.evaluationsystem.examine.web.req.ExamineReq;
 import cn.gmsj.evaluationsystem.exception.WafException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -35,6 +36,18 @@ public class ExamineController {
                     "", bindingResult.getFieldError().getDefaultMessage(), HttpStatus.NOT_ACCEPTABLE);
         } else {
             return examineService.updateData(examineEntity);
+        }
+    }
+
+    @PostMapping(
+            value = "/getById",
+            produces = {"application/json;charset=UTF-8"})
+    public Object getById(@RequestBody @Valid ExamineReq examineReq,BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            throw new WafException(
+                    "", bindingResult.getFieldError().getDefaultMessage(), HttpStatus.NOT_ACCEPTABLE);
+        } else {
+            return examineService.getById(examineReq);
         }
     }
 
