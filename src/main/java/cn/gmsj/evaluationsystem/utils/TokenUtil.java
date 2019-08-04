@@ -39,15 +39,13 @@ public class TokenUtil {
      * @return
      */
     public static Long getUserId(HttpServletRequest request) {
-        //测试返回
-        return 1L;
-//        try {
-//            Claims claims = (Claims) request.getAttribute(Token.CLAIMS.getName());
-//            return JSONUtil.toBean(JSONUtil.toJsonStr(claims.get(Token.USER.getName())), UserEntity.class).getId();
-//        } catch (Exception e) {
-//            logger.info("无法从token中取得用户信息");
-//            return null;
-//        }
+        try {
+            Claims claims = (Claims) request.getAttribute(Token.CLAIMS.getName());
+            return JSONUtil.toBean(JSONUtil.toJsonStr(claims.get(Token.USER.getName())), UserEntity.class).getId();
+        } catch (Exception e) {
+            logger.info("无法从token中取得用户信息");
+            return null;
+        }
     }
 
 }
