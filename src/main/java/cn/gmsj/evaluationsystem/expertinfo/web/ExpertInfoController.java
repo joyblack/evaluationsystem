@@ -13,6 +13,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 /**
  * @author 13562
@@ -42,12 +43,12 @@ public class ExpertInfoController {
     @PostMapping(
             value = "/getExpertInfo",
             produces = {"application/json;charset=UTF-8"})
-    public Object getExpertInfo(@RequestBody ExpertInfoReq expertInfoReq, HttpServletRequest req) {
+    public Object getExpertInfo(@RequestBody @Valid ExpertInfoReq expertInfoReq, BindingResult bindingResult,HttpServletRequest req) {
+        if (bindingResult.hasErrors()) {
+            throw new WafException(
+                    "", bindingResult.getFieldError().getDefaultMessage(), HttpStatus.NOT_ACCEPTABLE);
+        }
         UserEntity userEntity= TokenUtil.getUser(req);
-//        userEntity=new UserEntity();
-//        userEntity.setIdNumber("522628199407125811");
-//        userEntity.setName("周荣");
-//        userEntity.setPhone("13595117402");
         if(userEntity==null){
             throw new WafException("","用户信息不存在", HttpStatus.NOT_ACCEPTABLE);
         }
