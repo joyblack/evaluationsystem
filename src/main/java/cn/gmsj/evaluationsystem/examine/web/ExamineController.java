@@ -3,8 +3,8 @@ package cn.gmsj.evaluationsystem.examine.web;
 import cn.gmsj.evaluationsystem.common.constant.SystemConstant;
 import cn.gmsj.evaluationsystem.examine.domain.entity.ExamineEntity;
 import cn.gmsj.evaluationsystem.examine.service.ExamineService;
+import cn.gmsj.evaluationsystem.examine.web.req.ExamineListReq;
 import cn.gmsj.evaluationsystem.exception.WafException;
-import cn.gmsj.evaluationsystem.projectmanage.domain.entity.ProjectEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 /**
@@ -35,6 +36,13 @@ public class ExamineController {
         } else {
             return examineService.updateData(examineEntity);
         }
+    }
+
+    @PostMapping(
+            value = "/getAll",
+            produces = {"application/json;charset=UTF-8"})
+    public Object getAll(@RequestBody ExamineListReq examineListReq, HttpServletRequest request) {
+        return examineService.getAll(examineListReq,request);
     }
 
 
