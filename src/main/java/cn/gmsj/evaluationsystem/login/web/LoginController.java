@@ -32,4 +32,11 @@ public class LoginController {
     public Object loginByPhone(@RequestBody LoginReq loginReq) {
         return loginService.loginByPhone(loginReq);
     }
+
+    @PostMapping(
+            value = "/login",
+            produces = {"application/json;charset=UTF-8"})
+    public Object login(@RequestBody LoginReq loginReq) {
+        return loginService.login(loginReq);
+    }
 }

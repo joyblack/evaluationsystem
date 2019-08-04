@@ -78,4 +78,35 @@ public class LoginService {
             }
         }
     }
+
+    public JSONObject login(LoginReq loginReq) {
+        if (StringUtil.isEmpty(loginReq.getUsername())) {
+            throw new WafException("", "手机号/身份证/社会信用代码不能为空", HttpStatus.NOT_ACCEPTABLE);
+        }
+        if (StringUtil.isEmpty(loginReq.getPassword())) {
+            throw new WafException("", "密码不能为空", HttpStatus.NOT_ACCEPTABLE);
+        }
+        UserEntity userEntity = userRepository.findAllByPhoneAndPassword(loginReq.getUsername(), MD5Util.encode(loginReq.getPassword()));
+        if (userEntity != null) {
+            Map<String, Object> claims = new HashMap<String, Object>();
+            claims.put(Token.USER.getName(), userEntity);
+            return ResultUtil.success(JwtUtil.createJWT(claims, jwtParamConfig));
+        } else {
+            userEntity = userRepository.findAllByIdNumberAndPassword(loginReq.getUsername(), MD5Util.encode(loginReq.getPassword()));
+            if (userEntity != null) {
+                Map<String, Object> claims = new HashMap<String, Object>();
+                claims.put(Token.USER.getName(), userEntity);
+                return ResultUtil.success(JwtUtil.createJWT(claims, jwtParamConfig));
+            } else {
+                userEntity = userRepository.findAllBySocialCreditCodeAndPassword(loginReq.getUsername(), MD5Util.encode(loginReq.getPassword()));
+                if (userEntity != null) {
+                    Map<String, Object> claims = new HashMap<String, Object>();
+                    claims.put(Token.USER.getName(), userEntity);
+                    return ResultUtil.success(JwtUtil.createJWT(claims, jwtParamConfig));
+                } else {
+                    throw new WafException("", "手机号/身份证/社会信用代码与密码不匹配", HttpStatus.NOT_ACCEPTABLE);
+                }
+            }
+        }
+    }
 }
