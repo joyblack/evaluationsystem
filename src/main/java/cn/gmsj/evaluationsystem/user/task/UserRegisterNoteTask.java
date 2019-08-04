@@ -1,5 +1,6 @@
 package cn.gmsj.evaluationsystem.user.task;
 
+import cn.gmsj.evaluationsystem.common.constant.SystemConstant;
 import cn.gmsj.evaluationsystem.user.domain.model.UserRegisterNote;
 import cn.gmsj.evaluationsystem.user.service.UserRegisterNoteRedisService;
 import org.slf4j.Logger;
@@ -32,7 +33,7 @@ public class UserRegisterNoteTask {
                 logger.info("手机号:" + userRegisterNote.getPhone());
                 logger.info("验证码:" + userRegisterNote.getAuthCode());
                 userRegisterNote.setSend(true);
-                userRegisterNoteRedisService.put(userRegisterNote.getPhone(), userRegisterNote, 1800);
+                userRegisterNoteRedisService.put(userRegisterNote.getPhone(), userRegisterNote, SystemConstant.NOTE_VALID_TIME);
             }
         }
     }
