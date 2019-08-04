@@ -30,7 +30,7 @@ public class LoginNoteTask {
         List<LoginNote> loginNotes = loginNoteRedisService.getAll();
         for (LoginNote loginNote : loginNotes) {
             if (!loginNote.getSend()) {
-                logger.info("类型:", "登陆");
+                logger.info("类型:登陆", "");
                 logger.info("手机号:" + loginNote.getPhone());
                 logger.info("验证码:" + loginNote.getAuthCode());
                 loginNote.setSend(true);

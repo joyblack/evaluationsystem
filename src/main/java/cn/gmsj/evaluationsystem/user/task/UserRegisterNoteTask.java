@@ -30,7 +30,7 @@ public class UserRegisterNoteTask {
         List<UserRegisterNote> userRegisterNotes = userRegisterNoteRedisService.getAll();
         for (UserRegisterNote userRegisterNote : userRegisterNotes) {
             if (!userRegisterNote.getSend()) {
-                logger.info("类型:", "注册");
+                logger.info("类型:注册", "");
                 logger.info("手机号:" + userRegisterNote.getPhone());
                 logger.info("验证码:" + userRegisterNote.getAuthCode());
                 userRegisterNote.setSend(true);
