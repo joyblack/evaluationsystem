@@ -1,13 +1,13 @@
 package cn.gmsj.evaluationsystem.user.service;
 
+import cn.gmsj.evaluationsystem.common.constant.SystemConstant;
 import cn.gmsj.evaluationsystem.enums.UserDataType;
 import cn.gmsj.evaluationsystem.exception.WafException;
 import cn.gmsj.evaluationsystem.user.domain.entity.UserEntity;
+import cn.gmsj.evaluationsystem.user.domain.model.UserPassordResetNote;
 import cn.gmsj.evaluationsystem.user.domain.reposiory.UserRepository;
-import cn.gmsj.evaluationsystem.utils.CheckIdNumberUtil;
-import cn.gmsj.evaluationsystem.utils.MD5Util;
-import cn.gmsj.evaluationsystem.utils.ResultUtil;
-import cn.gmsj.evaluationsystem.utils.StringUtil;
+import cn.gmsj.evaluationsystem.user.web.req.UserPasswordResetReq;
+import cn.gmsj.evaluationsystem.utils.*;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,6 +21,9 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private UserPasswordResetRedisService userPasswordResetRedisService;
 
     public JSONObject updateData(UserEntity userEntity){
         if(null == userEntity.getUserDataType()){
@@ -98,7 +101,89 @@ public class UserService {
         }else{
             return ResultUtil.error("无效的注册操作");
         }
-
     }
 
+
+    public JSONObject checkPhone(String phone){
+        UserEntity userEntity = userRepository.findAllByPhone(phone);
+        if(null == userEntity){
+            return ResultUtil.success();
+        }else{
+            return ResultUtil.error("该手机号已被注册");
+        }
+    }
+
+    public JSONObject checkSocialCreditCod(String socialCreditCode){
+        UserEntity userEntity = userRepository.findAllBySocialCreditCode(socialCreditCode);
+        if(null == userEntity){
+            return ResultUtil.success();
+        }else{
+            return ResultUtil.error("该社会信用代码已被注册");
+        }
+    }
+
+    public JSONObject checkIdNumber(String idNumber){
+        UserEntity userEntity = userRepository.findAllByIdNumber(idNumber);
+        if(null == userEntity){
+            return ResultUtil.success();
+        }else{
+            return ResultUtil.error("该身份证号已被注册");
+        }
+    }
+
+    public JSONObject sendResetPasswordNote(UserPasswordResetReq userPasswordResetReq) {
+        if (StringUtil.isEmpty(userPasswordResetReq.getPhone())) {
+            throw new WafException("", "手机号码不能为空", HttpStatus.NOT_ACCEPTABLE);
+        } else {
+            if (!PhoneUtil.isMobile(userPasswordResetReq.getPhone())) {
+                throw new WafException("", "手机号码不合法", HttpStatus.NOT_ACCEPTABLE);
+            }
+            if (userRepository.findAllByPhone(userPasswordResetReq.getPhone()) != null) {
+                UserPassordResetNote userPassordResetNote = new UserPassordResetNote();
+                userPassordResetNote.setPhone(userPasswordResetReq.getPhone());
+                userPassordResetNote.setAuthCode(RandomUtil.sixAuthCode());
+                userPasswordResetRedisService.put(userPasswordResetReq.getPhone(), userPassordResetNote, SystemConstant.NOTE_VALID_TIME);
+                return ResultUtil.success();
+            } else {
+                throw new WafException("", "该手机号尚未注册", HttpStatus.NOT_ACCEPTABLE);
+            }
+        }
+    }
+
+    public JSONObject resetPasswordByPhone(UserPasswordResetReq userPasswordResetReq) {
+        if (StringUtil.isEmpty(userPasswordResetReq.getPhone())) {
+            throw new WafException("", "手机号码不能为空", HttpStatus.NOT_ACCEPTABLE);
+        } else {
+            if (!PhoneUtil.isMobile(userPasswordResetReq.getPhone())) {
+                throw new WafException("", "手机号码不合法", HttpStatus.NOT_ACCEPTABLE);
+            }
+            UserPassordResetNote userPassordResetNote = userPasswordResetRedisService.get(userPasswordResetReq.getPhone());
+            if (userPassordResetNote != null) {
+                if (userPassordResetNote.getAuthCode().equals(userPasswordResetReq.getAuthCode())) {
+                    UserEntity userEntity = userRepository.findAllByPhone(userPasswordResetReq.getPhone());
+                    if (userEntity != null) {
+                        userPasswordResetRedisService.remove(userPassordResetNote.getPhone());
+                        if(StringUtil.isEmpty(userPasswordResetReq.getPassword())){
+                            throw new WafException("", "密码为空", HttpStatus.NOT_ACCEPTABLE);
+                        }
+                        if(StringUtil.isEmpty(userPasswordResetReq.getAffirmPassword())){
+                            throw new WafException("", "确认密码为空", HttpStatus.NOT_ACCEPTABLE);
+                        }
+                        if(!StringUtil.equals(userPasswordResetReq.getPassword(),userPasswordResetReq.getAffirmPassword())){
+                            throw new WafException("", "密码输入不一致", HttpStatus.NOT_ACCEPTABLE);
+                        }
+                        userEntity.setPassword(MD5Util.encode(userPasswordResetReq.getPassword()));
+                        userRepository.save(userEntity);
+                        return ResultUtil.success();
+                    } else {
+                        throw new WafException("", "验证码错误", HttpStatus.NOT_ACCEPTABLE);
+                    }
+                } else {
+                    throw new WafException("", "验证码错误", HttpStatus.NOT_ACCEPTABLE);
+                }
+            } else {
+                throw new WafException("", "验证码错误", HttpStatus.NOT_ACCEPTABLE);
+            }
+        }
+    }
 }

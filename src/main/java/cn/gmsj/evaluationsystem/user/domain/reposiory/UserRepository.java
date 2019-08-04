@@ -15,6 +15,20 @@ public interface UserRepository extends BaseRepository<UserEntity>, JpaRepositor
 
 
     /**
+     * 检查社会信用代码是否被用过
+     *
+     * @param socialCreditCode
+     * @return
+     */
+    UserEntity findAllBySocialCreditCode(String socialCreditCode);
+
+    /**
+     * @param idNumber
+     * @return
+     */
+    UserEntity findAllByIdNumber(String idNumber);
+
+    /**
      * 查询手机号重复
      *
      * @param phone
@@ -66,4 +80,31 @@ public interface UserRepository extends BaseRepository<UserEntity>, JpaRepositor
      * @return
      */
     UserEntity findAllByPhone(String phone);
+
+    /**
+     * 通过手机号密码查询用户
+     *
+     * @param phone
+     * @param password
+     * @return
+     */
+    UserEntity findAllByPhoneAndPassword(String phone, String password);
+
+    /**
+     * 通过身份证号和密码查询用户
+     *
+     * @param idNumber
+     * @param password
+     * @return
+     */
+    UserEntity findAllByIdNumberAndPassword(String idNumber, String password);
+
+    /**
+     * 通过社会信用代码和密码查询用户
+     *
+     * @param socialCreditCode
+     * @param password
+     * @return
+     */
+    UserEntity findAllBySocialCreditCodeAndPassword(String socialCreditCode, String password);
 }

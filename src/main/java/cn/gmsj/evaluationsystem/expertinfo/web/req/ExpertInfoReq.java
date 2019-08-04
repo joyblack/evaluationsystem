@@ -8,6 +8,5 @@ import lombok.ToString;
 @Data
 @ToString
 public class ExpertInfoReq {
-    private ExpertInfoType expertInfoType;
-    private String idCard;
+    private ExpertInfoType expertInfoType;   //专家基本信息状态，提交了就不能看了，能源局审核通过了，在信息维护处可以查询出来。
 }
