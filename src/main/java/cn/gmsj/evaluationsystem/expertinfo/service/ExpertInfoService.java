@@ -79,8 +79,7 @@ public class ExpertInfoService {
     }
 
     public JSONObject getExpertInfo(ExpertInfoReq expertInfoReq, UserEntity userEntity) {
-        ExpertInfoEntity expertInfoEntity = expertInfoRepository.
-                findAllByIdCardAndExpertInfoType(userEntity.getIdNumber(), expertInfoReq.getExpertInfoType());
+        ExpertInfoEntity expertInfoEntity = expertInfoRepository.findAllByIdCard(userEntity.getIdNumber());
         ExpertInfoRes expertInfoRes = new ExpertInfoRes();
         expertInfoRes.setName(userEntity.getName());
         expertInfoRes.setSex(IdNumberUtil.getSex(userEntity.getIdNumber()));
