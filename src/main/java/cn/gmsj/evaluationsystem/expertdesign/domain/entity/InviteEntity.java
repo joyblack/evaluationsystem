@@ -4,7 +4,7 @@ import cn.gmsj.evaluationsystem.common.domain.entity.BaseEntity;
 import cn.gmsj.evaluationsystem.expertdesign.enums.InviteType;
 import cn.gmsj.evaluationsystem.expertdesign.enums.Status;
 import cn.gmsj.evaluationsystem.invite.enums.Invite;
-import cn.gmsj.evaluationsystem.userreg.domain.entity.UserRegEntity;
+import cn.gmsj.evaluationsystem.user.domain.entity.UserEntity;
 import lombok.Data;
 import lombok.ToString;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -31,7 +31,7 @@ public class InviteEntity extends BaseEntity implements Serializable {
     @NotNull(message = "邀请专家不能为空")
     @JoinColumn(name = "user_reg_id")
     @ManyToOne(cascade = {}, fetch = FetchType.EAGER)
-    private UserRegEntity userRegEntity;//邀请专家
+    private UserEntity userRegEntity;//邀请专家
 
     private  String inviteThirdPart;//邀请第三方机构
 
