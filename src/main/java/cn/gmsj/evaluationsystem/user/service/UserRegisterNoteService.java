@@ -29,7 +29,6 @@ public class UserRegisterNoteService {
                 throw new WafException("", "手机号码不合法", HttpStatus.NOT_ACCEPTABLE);
             }
             userRegisterNote.setAuthCode(RandomUtil.sixAuthCode());
-            System.out.println(userRegisterNote.getAuthCode());
             userRegisterNoteRedisService.put(userRegisterNote.getPhone(), userRegisterNote, 1800);
             return ResultUtil.success();
         }
