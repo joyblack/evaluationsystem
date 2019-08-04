@@ -6,6 +6,7 @@ import cn.gmsj.evaluationsystem.exception.WafException;
 import cn.gmsj.evaluationsystem.utils.JwtUtil;
 import io.jsonwebtoken.Claims;
 import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -32,7 +33,7 @@ public class AuthorizeAspect {
     public void auth() {
     }
 
-    //    @Before("auth()")
+    @Before("auth()")
     public void doAuth() {
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = attributes.getRequest();
