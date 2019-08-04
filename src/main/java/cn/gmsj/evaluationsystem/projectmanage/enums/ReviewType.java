@@ -12,7 +12,7 @@ public enum ReviewType {
     /**
      * 安设评审
      */
-    SAFE_DESIGN("");
+    SAFE_DESIGN("安设评审");
     private String name;
 
     ReviewType(String name) {

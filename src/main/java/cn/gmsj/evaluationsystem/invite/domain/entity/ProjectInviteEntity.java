@@ -5,6 +5,7 @@ import cn.gmsj.evaluationsystem.invite.enums.Invite;
 import cn.gmsj.evaluationsystem.invite.enums.InviteDirection;
 import cn.gmsj.evaluationsystem.invite.enums.InviteState;
 import cn.gmsj.evaluationsystem.projectmanage.domain.entity.ProjectEntity;
+import cn.gmsj.evaluationsystem.projectmanage.enums.ReviewType;
 import cn.gmsj.evaluationsystem.user.domain.entity.UserEntity;
 import lombok.Data;
 import lombok.ToString;
@@ -64,4 +65,8 @@ public class ProjectInviteEntity extends BaseEntity implements Serializable {
      * 邀请参与方向
      */
     private InviteDirection inviteDirection;
+    /**
+     * 设评类型
+     */
+    private ReviewType reviewType;
 }
