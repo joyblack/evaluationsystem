@@ -19,4 +19,8 @@ public class LoginReq implements Serializable {
     private String phone;
 
     private String authCode;
+
+    private String username;
+
+    private String password;
 }
