@@ -98,7 +98,33 @@ public class UserService {
         }else{
             return ResultUtil.error("无效的注册操作");
         }
-
     }
 
+
+    public JSONObject checkPhone(String phone){
+        UserEntity userEntity = userRepository.findAllByPhone(phone);
+        if(null == userEntity){
+            return ResultUtil.success();
+        }else{
+            return ResultUtil.error("该手机号已被注册");
+        }
+    }
+
+    public JSONObject checkSocialCreditCod(String socialCreditCode){
+        UserEntity userEntity = userRepository.findAllBySocialCreditCode(socialCreditCode);
+        if(null == userEntity){
+            return ResultUtil.success();
+        }else{
+            return ResultUtil.error("该社会信用代码已被注册");
+        }
+    }
+
+    public JSONObject checkIdNumber(String idNumber){
+        UserEntity userEntity = userRepository.findAllByIdNumber(idNumber);
+        if(null == userEntity){
+            return ResultUtil.success();
+        }else{
+            return ResultUtil.error("该身份证号已被注册");
+        }
+    }
 }

@@ -15,6 +15,19 @@ public interface UserRepository extends BaseRepository<UserEntity>, JpaRepositor
 
 
     /**
+     * 检查社会信用代码是否被用过
+     * @param socialCreditCode
+     * @return
+     */
+    UserEntity findAllBySocialCreditCode(String socialCreditCode);
+
+    /**
+     *
+     * @param idNumber
+     * @return
+     */
+    UserEntity findAllByIdNumber(String idNumber);
+    /**
      * 查询手机号重复
      *
      * @param phone

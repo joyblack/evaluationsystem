@@ -3,7 +3,10 @@ package cn.gmsj.evaluationsystem.user.web;
 import cn.gmsj.evaluationsystem.common.constant.SystemConstant;
 import cn.gmsj.evaluationsystem.exception.WafException;
 import cn.gmsj.evaluationsystem.user.domain.entity.UserEntity;
+import cn.gmsj.evaluationsystem.user.domain.model.UserCheck;
 import cn.gmsj.evaluationsystem.user.service.UserService;
+import cn.gmsj.evaluationsystem.utils.ResultUtil;
+import cn.gmsj.evaluationsystem.utils.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
@@ -41,4 +44,35 @@ public class UserController {
             return userService.updateData(userEntity);
         }
     }
+
+    @PostMapping(
+            value = "/checkPhone",
+            produces = {"application/json;charset=UTF-8"})
+    public Object checkPhone(@RequestBody UserCheck userCheck) {
+        if(StringUtil.isEmpty(userCheck.getPhone())){
+            return ResultUtil.error("手机号为空");
+        }
+        return userService.checkPhone(userCheck.getPhone());
+    }
+
+    @PostMapping(
+            value = "/checkIdNumber",
+            produces = {"application/json;charset=UTF-8"})
+    public Object check(@RequestBody UserCheck userCheck) {
+        if(StringUtil.isEmpty(userCheck.getIdNumber())){
+            return ResultUtil.error("身份证号为空");
+        }
+        return userService.checkIdNumber(userCheck.getIdNumber());
+    }
+
+    @PostMapping(
+            value = "/checkSocialCreditCod",
+            produces = {"application/json;charset=UTF-8"})
+    public Object checkSocialCreditCod(@RequestBody UserCheck userCheck) {
+        if(StringUtil.isEmpty(userCheck.getSocialCreditCode())){
+            return ResultUtil.error("社会信用代码为空");
+        }
+        return userService.checkSocialCreditCod(userCheck.getSocialCreditCode());
+    }
+
 }
