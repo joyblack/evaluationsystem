@@ -19,4 +19,13 @@ public interface ExpertInfoRepository extends BaseRepository<ExpertInfoEntity>, 
 
     ExpertInfoEntity findAllByIdCard(String idCard);
 
+    /**
+     * 分页模糊查询
+     *
+     * @param specification
+     * @param pageable
+     * @return
+     */
+    Page<ExpertInfoEntity> findAll(Specification specification, Pageable pageable);
+
 }

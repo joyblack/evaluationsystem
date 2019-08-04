@@ -185,20 +185,20 @@ public class ExpertInfoService {
             expertInfoRes.setAcademicSituation(expertInfoEntity.getAcademicSituation());
             expertInfoRes.setReward(expertInfoEntity.getReward());
             expertInfoRes.setResearchFinding(expertInfoEntity.getResearchFinding());
-            List<ExpertInfoImageEntity> expertInfoImageEntityList=expertInfoImageRepository.findAllByUserEntityOrderByCreateTimeDesc(userEntity);
-            if(ObjectUtils.isEmpty(expertInfoImageEntityList)){
-                expertInfoRes.setExpertInfoImageEntity(new ExpertInfoImageEntity());
-            }else {
-                expertInfoRes.setExpertInfoImageEntity(expertInfoImageEntityList.get(0));
-            }
-            List<ExpertInfoFileEntity>  expertInfoFileEntityList=expertInfoFileRepository.findAllByOrderByCreateTimeDesc();
-            if(ObjectUtils.isEmpty(expertInfoFileEntityList)){
-                expertInfoFileEntityList=new ArrayList<>();
-                expertInfoRes.setExpertInfoFileEntityList(expertInfoFileEntityList);
-            }else {
-                expertInfoRes.setExpertInfoFileEntityList(expertInfoFileEntityList);
-            }
             expertInfoRes.setExpertInfoType(expertInfoEntity.getExpertInfoType());
+        }
+        List<ExpertInfoImageEntity> expertInfoImageEntityList=expertInfoImageRepository.findAllByUserEntityOrderByCreateTimeDesc(userEntity);
+        if(ObjectUtils.isEmpty(expertInfoImageEntityList)){
+            expertInfoRes.setExpertInfoImageEntity(new ExpertInfoImageEntity());
+        }else {
+            expertInfoRes.setExpertInfoImageEntity(expertInfoImageEntityList.get(0));
+        }
+        List<ExpertInfoFileEntity>  expertInfoFileEntityList=expertInfoFileRepository.findAllByOrderByCreateTimeDesc();
+        if(ObjectUtils.isEmpty(expertInfoFileEntityList)){
+            expertInfoFileEntityList=new ArrayList<>();
+            expertInfoRes.setExpertInfoFileEntityList(expertInfoFileEntityList);
+        }else {
+            expertInfoRes.setExpertInfoFileEntityList(expertInfoFileEntityList);
         }
         return ResultUtil.success(expertInfoRes);
     }
