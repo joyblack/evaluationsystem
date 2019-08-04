@@ -111,10 +111,6 @@ public class ExpertInfoFileService {
 
 
     public JSONObject uploadImage(MultipartFile file,UserEntity userEntity) {
-        ExpertInfoEntity expertInfoEntity=expertInfoRepository.findAllByIdCard(userEntity.getIdNumber());
-        if(expertInfoEntity==null){
-            throw new WafException("", "专家基本信息不存在", HttpStatus.NOT_ACCEPTABLE);
-        }
         ExpertInfoImageEntity expertInfoImageEntity=new ExpertInfoImageEntity();
         // 检查文件
         String name = file.getOriginalFilename();
@@ -140,7 +136,7 @@ public class ExpertInfoFileService {
         String fileFinalPath = stringBuffer.toString() + path;
         expertInfoImageEntity.setPath(fileFinalPath + File.separator + fileName);
         expertInfoImageEntity.setUuidName(uuid + "-" + name + names[names.length - 1]);
-        expertInfoImageEntity.setExpertInfoEntity(expertInfoEntity);
+        expertInfoImageEntity.setUserEntity(userEntity);
         // 保存上传文件
         try {
             FileUtil.save(file.getBytes(), fileFinalPath, fileName);

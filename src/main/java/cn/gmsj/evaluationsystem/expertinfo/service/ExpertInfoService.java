@@ -176,7 +176,7 @@ public class ExpertInfoService {
             expertInfoRes.setAcademicSituation(expertInfoEntity.getAcademicSituation());
             expertInfoRes.setReward(expertInfoEntity.getReward());
             expertInfoRes.setResearchFinding(expertInfoEntity.getResearchFinding());
-            List<ExpertInfoImageEntity> expertInfoImageEntityList=expertInfoImageRepository.findAllByOrderByCreateTimeDesc();
+            List<ExpertInfoImageEntity> expertInfoImageEntityList=expertInfoImageRepository.findAllByUserEntityOrderByCreateTimeDesc(userEntity);
             if(ObjectUtils.isEmpty(expertInfoImageEntityList)){
                 expertInfoRes.setExpertInfoImageEntity(new ExpertInfoImageEntity());
             }else {

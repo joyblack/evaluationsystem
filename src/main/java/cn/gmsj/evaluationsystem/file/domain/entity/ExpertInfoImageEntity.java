@@ -36,4 +36,8 @@ public class ExpertInfoImageEntity extends BaseEntity implements Serializable {
     @JoinColumn(name = "expert_info_id")
     @ManyToOne(cascade = {}, fetch = FetchType.EAGER)
     private ExpertInfoEntity expertInfoEntity;
+
+    @JoinColumn(name = "user_id")
+    @ManyToOne(cascade = {}, fetch = FetchType.EAGER)
+    private UserEntity userEntity;
 }
