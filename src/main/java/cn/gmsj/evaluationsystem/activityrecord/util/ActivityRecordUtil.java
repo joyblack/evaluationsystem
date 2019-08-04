@@ -6,7 +6,6 @@ import cn.gmsj.evaluationsystem.activityrecord.enums.ActivityRecord;
 import cn.gmsj.evaluationsystem.activityrecord.enums.ActivityRecordType;
 import cn.gmsj.evaluationsystem.enums.UserDataType;
 import cn.gmsj.evaluationsystem.user.domain.entity.UserEntity;
-import cn.gmsj.evaluationsystem.userreg.domain.entity.UserRegEntity;
 import cn.gmsj.evaluationsystem.utils.StringUtil;
 
 /**
@@ -18,16 +17,16 @@ public class ActivityRecordUtil {
     /**
      * 创建活动记录  -- 双向记录
      * 例如:贵州省能源局通过了你的入库申请
-     * @param userRegEntity1
-     * @param userRegEntity2
+     * @param userEntity1
+     * @param userEntity2
      * @param activityRecord
      * @param activityRecordType
      * @param activityRecordRepository
      */
-    public static Boolean createActivityRecordByTarget(UserRegEntity userRegEntity1, UserRegEntity userRegEntity2,
+    public static Boolean createActivityRecordByTarget(UserEntity userEntity1, UserEntity userEntity2,
                                                     ActivityRecord activityRecord, ActivityRecordType activityRecordType,
                                                     ActivityRecordRepository activityRecordRepository){
-        if(null == userRegEntity1 || null == userRegEntity2
+        if(null == userEntity1 || null == userEntity2
                 || null == activityRecord || null == activityRecordType){
             return false;
         }
@@ -36,21 +35,29 @@ public class ActivityRecordUtil {
          */
         String message ;
         StringBuffer stringBuffer = new StringBuffer();
-        stringBuffer.append(userRegEntity1.getUserDataType().getName());
-        stringBuffer.append(userRegEntity1.getUname());
+        stringBuffer.append(userEntity1.getUserDataType().getName());
+        if(StringUtil.equals(userEntity1.getUserDataType().getName(),UserDataType.SPECIALIST.getName())){
+            stringBuffer.append(userEntity1.getName()+"("+userEntity1.getIdNumber()+")");
+        }else{
+            stringBuffer.append(userEntity1.getUnitName());
+        }
         stringBuffer.append(activityRecordType.getName()+"了");
-        stringBuffer.append(userRegEntity2.getUname()+"("+userRegEntity2.getNumberId()+")的");
+        if(StringUtil.equals(userEntity1.getUserDataType().getName(),UserDataType.SPECIALIST.getName())){
+            stringBuffer.append(userEntity2.getName()+"("+userEntity2.getIdNumber()+")");
+        }else{
+            stringBuffer.append(userEntity2.getUnitName());
+        }
         stringBuffer.append(activityRecord.getName());
         message = stringBuffer.toString();
         /**
          * 创建记录  -- 双向记录
          */
         ActivityRecordEntity activityRecordEntity1 = new ActivityRecordEntity();
-       // activityRecordEntity1.setUserRegEntity(userRegEntity1);
+       activityRecordEntity1.setUserEntity(userEntity1);
         activityRecordEntity1.setMessage(message);
         activityRecordEntity1.setUserDataType(UserDataType.SPECIALIST);
         ActivityRecordEntity activityRecordEntity2 = new ActivityRecordEntity();
-        //activityRecordEntity2.setUserRegEntity(userRegEntity2);
+        activityRecordEntity2.setUserEntity(userEntity2);
         activityRecordEntity2.setMessage(message);
         activityRecordEntity1.setUserDataType(UserDataType.BUREAU_ENERGY);
         activityRecordRepository.save(activityRecordEntity1);
@@ -90,11 +97,6 @@ public class ActivityRecordUtil {
          * 创建记录  -- 单向记录
          */
         ActivityRecordEntity activityRecordEntity = new ActivityRecordEntity();
-        if(StringUtil.equals(userEntity.getUserDataType().getName(),UserDataType.SPECIALIST.getName())){
-            stringBuffer.append(userEntity.getName()+"("+userEntity.getIdNumber()+")");
-        }else{
-            stringBuffer.append(userEntity.getUnitName());
-        }
         activityRecordEntity.setMessage(message);
         activityRecordEntity.setUserDataType(UserDataType.SPECIALIST);
         activityRecordRepository.save(activityRecordEntity);
