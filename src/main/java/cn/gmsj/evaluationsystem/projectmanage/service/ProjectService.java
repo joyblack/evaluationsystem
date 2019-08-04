@@ -40,7 +40,10 @@ public class ProjectService {
           if (proe.getProjectName().equals(projectEntity.getProjectName())){
               throw new WafException("", "您输入的项目名称已存在！", HttpStatus.NOT_ACCEPTABLE);
           }
-            MultipartFile file = null;
+          if(proe.getProjectPaperUrl().equals(projectEntity.getProjectPaperUrl())){
+              return ResultUtil.error("您不能重复提交资料！");
+          }
+
 
         }
         return ResultUtil.success(projectRepository.save(projectEntity));

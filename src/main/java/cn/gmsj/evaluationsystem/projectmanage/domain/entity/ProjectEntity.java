@@ -1,10 +1,13 @@
 package cn.gmsj.evaluationsystem.projectmanage.domain.entity;
 
 import cn.gmsj.evaluationsystem.common.domain.entity.BaseEntity;
+import cn.gmsj.evaluationsystem.file.domain.entity.ExpertInfoFileEntity;
+import cn.gmsj.evaluationsystem.projectmanage.enums.GasGrade;
+import cn.gmsj.evaluationsystem.projectmanage.enums.NatueType;
 import lombok.Data;
 import lombok.ToString;
 
-import javax.persistence.Entity;
+import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -31,7 +34,7 @@ public class ProjectEntity extends BaseEntity implements Serializable {
      * 项目性质
      */
     @NotEmpty(message = "项目性质不能为空")
-    private String projectNature;
+    private NatueType natueType;
     /**
      * 总投资额
      */
@@ -66,7 +69,7 @@ public class ProjectEntity extends BaseEntity implements Serializable {
      * 瓦斯等级
      */
     @NotEmpty(message = "瓦斯等级不能为空")
-    private String gasGrade;
+    private GasGrade gasGrade;
     /**
      * 项目简介
      */
@@ -78,10 +81,12 @@ public class ProjectEntity extends BaseEntity implements Serializable {
     @NotEmpty(message = "项目内容不能为空")
     private String projectContent;
     /**
-     * 上传项目的文件
+     * 上传项目的资料文件
      */
-    @NotEmpty(message = "上传项目不能为空")
-    private String projectPaperUrl;
+    @Lob
+    @JoinColumn(name = "experti_info_file_id")
+    @ManyToOne(cascade = {}, fetch = FetchType.EAGER)
+    private ExpertInfoFileEntity projectPaperUrl;
     /**
      * 外部链接
      */
