@@ -69,4 +69,8 @@ public class ProjectInviteEntity extends BaseEntity implements Serializable {
      * 设评类型
      */
     private ReviewType reviewType;
+    /**
+     * 邀请内容
+     */
+    private String inviteContent;
 }
