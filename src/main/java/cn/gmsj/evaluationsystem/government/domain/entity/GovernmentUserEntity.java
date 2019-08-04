@@ -1,4 +1,4 @@
-package cn.gmsj.evaluationsystem.user.domain.entity;
+package cn.gmsj.evaluationsystem.government.domain.entity;
 
 import cn.gmsj.evaluationsystem.common.domain.entity.BaseEntity;
 import cn.gmsj.evaluationsystem.enums.UserDataType;
@@ -10,7 +10,6 @@ import javax.persistence.Entity;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * Created by XiaoWen on 2019/8/3
@@ -18,20 +17,15 @@ import java.util.List;
  */
 @Data
 @ToString
-@Entity(name = "all_user_info")
-public class UserEntity extends BaseEntity implements Serializable {
+@Entity(name = "all_government_user_info")
+public class GovernmentUserEntity extends BaseEntity implements Serializable {
 
     /**
      * 姓名
      */
+    @NotNull(message = "名字不能为空")
     @Column(name = "name")
     private String name;
-
-    /**
-     * 身份证号
-     */
-    @Column(name = "id_number")
-    private String idNumber;
 
     /**
      * 密码
@@ -54,33 +48,11 @@ public class UserEntity extends BaseEntity implements Serializable {
     private String phone;
 
     /**
-     * 单位名称
-     */
-    @Column(name = "unit_name")
-    private String unitName;
-
-    /**
-     * 统一社会信用代码
-     */
-    @Column(name = "social_credit_code")
-    private String socialCreditCode;
-
-    /**
-     * 营业执照
-     */
-    @Column(name = "business_licence")
-    private String businessLicence;
-
-    /**
      * 用户数据类型
      */
+    @NotNull(message = "用户数据类型不能为空")
     private UserDataType userDataType;
 
-    /**
-     * 图片集合
-     */
-    @Transient
-    private List<UserImageEntity> userImageEntities;
 
 
 

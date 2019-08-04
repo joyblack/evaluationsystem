@@ -1,6 +1,8 @@
 package cn.gmsj.evaluationsystem.file.service;
 
 import cn.gmsj.evaluationsystem.exception.WafException;
+import cn.gmsj.evaluationsystem.expertinfo.domain.entity.ExpertInfoEntity;
+import cn.gmsj.evaluationsystem.expertinfo.domain.repository.ExpertInfoRepository;
 import cn.gmsj.evaluationsystem.file.domain.entity.ExpertInfoFileEntity;
 import cn.gmsj.evaluationsystem.file.domain.entity.ExpertInfoImageEntity;
 import cn.gmsj.evaluationsystem.file.domain.repository.ExpertInfoFileRepository;
@@ -18,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
@@ -46,7 +49,14 @@ public class ExpertInfoFileService {
     @Autowired
     private ExpertInfoImageRepository expertInfoImageRepository;
 
-    public JSONObject uploadFile(MultipartFile file) {
+    @Autowired
+    private ExpertInfoRepository expertInfoRepository;
+
+    public JSONObject uploadFile(MultipartFile file,UserEntity userEntity) {
+        ExpertInfoEntity expertInfoEntity=expertInfoRepository.findAllByIdCard(userEntity.getIdNumber());
+        if(expertInfoEntity==null){
+            throw new WafException("", "专家基本信息不存在", HttpStatus.NOT_ACCEPTABLE);
+        }
         String name = file.getOriginalFilename();
         String[] names = name.split("\\.");
         if (null == names || names.length == 0) {
@@ -81,6 +91,7 @@ public class ExpertInfoFileService {
             expertInfoFileEntity.setPath(fileFinalPath + File.separator + newFileName);
             expertInfoFileEntity.setUuid(uuid);
             expertInfoFileEntity.setUuidFileName(uuid + "-" + newFileName);
+            expertInfoFileEntity.setExpertInfoEntity(expertInfoEntity);
             try {
                 FileUtil.save(file.getBytes(), fileFinalPath,newFileName.toString());
             } catch (IOException e) {
@@ -90,16 +101,20 @@ public class ExpertInfoFileService {
         }
     }
 
-    public JSONObject getUploadFile(String uuid) {
-        ExpertInfoFileEntity expertInfoFileEntity=expertInfoFileRepository.findAllByUuid(uuid);
-        if(expertInfoFileEntity==null){
-            throw new WafException("", "文件不存在", HttpStatus.NOT_ACCEPTABLE);
+    public JSONObject getUploadFile() {
+        List<ExpertInfoFileEntity> expertInfoFileEntityList=expertInfoFileRepository.findAll();
+        if(expertInfoFileEntityList==null){
+            expertInfoFileEntityList=new ArrayList<>();
         }
-        return ResultUtil.success(expertInfoFileEntity);
+        return ResultUtil.success(expertInfoFileEntityList);
     }
 
 
-    public JSONObject uploadImage(MultipartFile file) {
+    public JSONObject uploadImage(MultipartFile file,UserEntity userEntity) {
+        ExpertInfoEntity expertInfoEntity=expertInfoRepository.findAllByIdCard(userEntity.getIdNumber());
+        if(expertInfoEntity==null){
+            throw new WafException("", "专家基本信息不存在", HttpStatus.NOT_ACCEPTABLE);
+        }
         ExpertInfoImageEntity expertInfoImageEntity=new ExpertInfoImageEntity();
         // 检查文件
         String name = file.getOriginalFilename();
@@ -124,6 +139,8 @@ public class ExpertInfoFileService {
         }
         String fileFinalPath = stringBuffer.toString() + path;
         expertInfoImageEntity.setPath(fileFinalPath + File.separator + fileName);
+        expertInfoImageEntity.setUuidName(uuid + "-" + name + names[names.length - 1]);
+        expertInfoImageEntity.setExpertInfoEntity(expertInfoEntity);
         // 保存上传文件
         try {
             FileUtil.save(file.getBytes(), fileFinalPath, fileName);

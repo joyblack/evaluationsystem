@@ -1,6 +1,7 @@
 package cn.gmsj.evaluationsystem.activityrecord.domain.entity;
 
 import cn.gmsj.evaluationsystem.common.domain.entity.BaseEntity;
+import cn.gmsj.evaluationsystem.enums.UserDataType;
 import cn.gmsj.evaluationsystem.user.domain.entity.UserEntity;
 import lombok.Data;
 import lombok.ToString;
@@ -30,5 +31,11 @@ public class ActivityRecordEntity extends BaseEntity implements Serializable {
      * 日志消息
      */
     private String message;
+
+    /**
+     * 用户数据类型
+     */
+    private UserDataType userDataType;
+
 
 }

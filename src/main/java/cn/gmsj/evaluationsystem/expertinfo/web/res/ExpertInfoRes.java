@@ -3,6 +3,8 @@ package cn.gmsj.evaluationsystem.expertinfo.web.res;
 import cn.gmsj.evaluationsystem.expertinfo.domain.entity.*;
 import cn.gmsj.evaluationsystem.expertinfo.domain.enums.ExpertInfoType;
 import cn.gmsj.evaluationsystem.expertinfo.domain.enums.SexType;
+import cn.gmsj.evaluationsystem.file.domain.entity.ExpertInfoFileEntity;
+import cn.gmsj.evaluationsystem.file.domain.entity.ExpertInfoImageEntity;
 import lombok.Data;
 import lombok.ToString;
 
@@ -78,12 +80,10 @@ public class ExpertInfoRes {
 
     private String researchFinding; //安全生产相关工作主要业绩及研究成果
 
-    private String pictureUrl;     //照片路径。
+    private ExpertInfoImageEntity expertInfoImageEntity;     //照片信息
 
-    private String materialUrl;     //上传资料路径。
+    private List<ExpertInfoFileEntity> expertInfoFileEntityList;     //上传资料信息
 
     private ExpertInfoType expertInfoType;     //专家信息状态
-
-
 
 }
