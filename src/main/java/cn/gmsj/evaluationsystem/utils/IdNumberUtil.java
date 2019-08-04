@@ -141,7 +141,7 @@ public class IdNumberUtil {
                 //身份证上的日期
                 day=idNumber.substring(12).substring(0,2);
             }
-            birthday=year+"-"+month+"-"+day+"-";
+            birthday=year+"-"+month+"-"+day;
         }
         return birthday;
     }
