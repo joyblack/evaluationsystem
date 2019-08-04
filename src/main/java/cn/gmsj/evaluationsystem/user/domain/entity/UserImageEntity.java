@@ -4,8 +4,7 @@ import cn.gmsj.evaluationsystem.common.domain.entity.BaseEntity;
 import lombok.Data;
 import lombok.ToString;
 
-import javax.persistence.Entity;
-import javax.persistence.Lob;
+import javax.persistence.*;
 import java.io.Serializable;
 
 /**
@@ -13,7 +12,7 @@ import java.io.Serializable;
  */
 @Data
 @ToString
-@Entity(name = "all_user_image")
+@Entity(name = "all_user_image_info")
 public class UserImageEntity extends BaseEntity implements Serializable {
 
 
@@ -33,7 +32,9 @@ public class UserImageEntity extends BaseEntity implements Serializable {
     /**
      * 图片所属用户
      */
-    private Long userId;
+    @JoinColumn(name = "user_id")
+    @ManyToOne(cascade = {}, fetch = FetchType.EAGER)
+    private UserEntity userEntity;
 
     /**
      * 存储路径
