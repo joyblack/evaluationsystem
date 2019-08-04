@@ -26,10 +26,10 @@ public class InviteEntity extends BaseEntity implements Serializable {
 //    @ManyToOne(cascade = {}, fetch = FetchType.EAGER)
 //    private String energyProject;//能源局项目
 
-    private Invite invite;//邀请类型
+    private Invite invite;//邀请类型枚举
 
     @NotNull(message = "邀请专家不能为空")
-    @JoinColumn(name = "user_reg_id")
+    @JoinColumn(name = "user_id")
     @ManyToOne(cascade = {}, fetch = FetchType.EAGER)
     private UserEntity userRegEntity;//邀请专家
 
