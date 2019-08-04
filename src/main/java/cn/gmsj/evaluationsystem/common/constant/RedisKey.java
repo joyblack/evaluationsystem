@@ -7,5 +7,9 @@ public class RedisKey {
     /**
      * 用户注册
      */
-    public static final String USER_REGISTER = "U_R";
+    public static final String USER_REGISTER = "ES_U_R";
+    /**
+     * 用户登录
+     */
+    public static final String USER_LOGIN = "ES_U_L";
 }
