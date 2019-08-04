@@ -2,7 +2,6 @@ package cn.gmsj.evaluationsystem.examine.domain.entity;
 
 import cn.gmsj.evaluationsystem.common.domain.entity.BaseEntity;
 import cn.gmsj.evaluationsystem.invite.domain.entity.ProjectInviteEntity;
-import cn.gmsj.evaluationsystem.projectmanage.domain.entity.ProjectEntity;
 import lombok.Data;
 import lombok.ToString;
 
@@ -28,7 +27,6 @@ public class ExamineEntity extends BaseEntity implements Serializable {
 
     @Column(name = "suggestion")
     @Lob
-    @NotNull(message = "意见不能为空")
     private String suggestion;
 
 }
