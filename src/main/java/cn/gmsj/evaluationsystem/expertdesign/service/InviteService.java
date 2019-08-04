@@ -11,8 +11,8 @@ import cn.gmsj.evaluationsystem.expertdesign.web.req.InviteReq;
 import cn.gmsj.evaluationsystem.invite.domain.entity.ProjectInviteEntity;
 
 import cn.gmsj.evaluationsystem.projectmanage.domain.entity.ProjectEntity;
-import cn.gmsj.evaluationsystem.userreg.domain.entity.UserRegEntity;
-import cn.gmsj.evaluationsystem.userreg.domain.repository.UserRegRepository;
+import cn.gmsj.evaluationsystem.user.domain.entity.UserEntity;
+import cn.gmsj.evaluationsystem.user.domain.reposiory.UserRepository;
 import cn.gmsj.evaluationsystem.utils.ResultUtil;
 import cn.gmsj.evaluationsystem.utils.UpdateUtil;
 import com.alibaba.fastjson.JSONObject;
@@ -35,7 +35,7 @@ public class InviteService {
     private InviteRepository inviteRepository;
 
     @Autowired
-    private UserRegRepository userRegRepository;
+    private UserRepository userRegRepository;
 
     @Autowired
     private ExamineRepository examineRepository;
@@ -94,7 +94,7 @@ public class InviteService {
 
     public JSONObject getAllByUserReg(InviteListReq inviteListReq) {
         if (inviteListReq.getUserRegId() != null) {
-            UserRegEntity userRegEntity = userRegRepository.findAllById(inviteListReq.getUserRegId());
+            UserEntity userRegEntity = userRegRepository.findAllById(inviteListReq.getUserRegId());
             if (userRegEntity != null) {
                 Pageable pageable = PageRequest.of(inviteListReq.getPage() - 1, inviteListReq.getSize());
                 Page<InviteEntity> inviteEntities = inviteRepository.findAllByUser(userRegEntity, pageable);

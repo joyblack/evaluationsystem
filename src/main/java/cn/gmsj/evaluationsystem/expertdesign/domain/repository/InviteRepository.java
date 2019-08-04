@@ -6,7 +6,6 @@ import cn.gmsj.evaluationsystem.expertdesign.domain.entity.InviteEntity;
 
 import cn.gmsj.evaluationsystem.projectmanage.domain.entity.ProjectEntity;
 import cn.gmsj.evaluationsystem.user.domain.entity.UserEntity;
-import cn.gmsj.evaluationsystem.userreg.domain.entity.UserRegEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -30,6 +29,6 @@ public interface InviteRepository extends BaseRepository<InviteEntity>, JpaRepos
      * @param
      * @return
      */
-    Page<InviteEntity> findAllByUser(UserRegEntity userReg, Pageable pageable);
+    Page<InviteEntity> findAllByUser(UserEntity userReg, Pageable pageable);
 
 }
