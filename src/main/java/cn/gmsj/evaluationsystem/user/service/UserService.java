@@ -4,7 +4,7 @@ import cn.gmsj.evaluationsystem.enums.UserDataType;
 import cn.gmsj.evaluationsystem.exception.WafException;
 import cn.gmsj.evaluationsystem.user.domain.entity.UserEntity;
 import cn.gmsj.evaluationsystem.user.domain.reposiory.UserRepository;
-import cn.gmsj.evaluationsystem.user.util.CheckIdNumberUtil;
+import cn.gmsj.evaluationsystem.utils.CheckIdNumberUtil;
 import cn.gmsj.evaluationsystem.utils.MD5Util;
 import cn.gmsj.evaluationsystem.utils.ResultUtil;
 import cn.gmsj.evaluationsystem.utils.StringUtil;

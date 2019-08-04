@@ -1,4 +1,4 @@
-package cn.gmsj.evaluationsystem.user.util;
+package cn.gmsj.evaluationsystem.utils;
 
 /**
  * Created by XiaoWen on 2019/8/3

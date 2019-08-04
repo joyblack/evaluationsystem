@@ -13,8 +13,10 @@ import java.util.concurrent.TimeUnit;
  * @author Alan
  */
 public abstract class IRedisService<T> {
+
     @Autowired
     protected RedisTemplate<String, Object> redisTemplate;
+
     @Resource
     protected HashOperations<String, String, T> hashOperations;
 
