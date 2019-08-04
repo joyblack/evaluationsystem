@@ -43,12 +43,12 @@ public class ExpertInfoController {
     @PostMapping(
             value = "/getExpertInfo",
             produces = {"application/json;charset=UTF-8"})
-    public Object getExpertInfo(@RequestBody ExpertInfoReq expertInfoReq, HttpServletRequest req) {
+    public Object getExpertInfo(HttpServletRequest req) {
         UserEntity userEntity= TokenUtil.getUser(req);
         if(userEntity==null){
             throw new WafException("","用户信息不存在", HttpStatus.NOT_ACCEPTABLE);
         }
-        return expertInfoService.getExpertInfo(expertInfoReq,userEntity);
+        return expertInfoService.getExpertInfo(userEntity);
     }
 
 

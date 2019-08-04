@@ -78,7 +78,7 @@ public class ExpertInfoService {
         return ResultUtil.success(expertInfoRepository.save(expertInfoEntity));
     }
 
-    public JSONObject getExpertInfo(ExpertInfoReq expertInfoReq, UserEntity userEntity) {
+    public JSONObject getExpertInfo(UserEntity userEntity) {
         ExpertInfoEntity expertInfoEntity = expertInfoRepository.findAllByIdCard(userEntity.getIdNumber());
         ExpertInfoRes expertInfoRes = new ExpertInfoRes();
         expertInfoRes.setName(userEntity.getName());
