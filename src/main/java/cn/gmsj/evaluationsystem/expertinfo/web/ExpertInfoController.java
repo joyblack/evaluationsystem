@@ -5,6 +5,8 @@ import cn.gmsj.evaluationsystem.exception.WafException;
 import cn.gmsj.evaluationsystem.expertinfo.domain.entity.ExpertInfoEntity;
 import cn.gmsj.evaluationsystem.expertinfo.service.ExpertInfoService;
 import cn.gmsj.evaluationsystem.expertinfo.web.req.ExpertInfoReq;
+import cn.gmsj.evaluationsystem.user.domain.entity.UserEntity;
+import cn.gmsj.evaluationsystem.utils.TokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
@@ -41,10 +43,10 @@ public class ExpertInfoController {
             value = "/getExpertInfo",
             produces = {"application/json;charset=UTF-8"})
     public Object getExpertInfo(@RequestBody ExpertInfoReq expertInfoReq, HttpServletRequest req) {
-//        UserEntity userEntity= TokenUtil.getUser(req);
-//        if(userEntity==null){
-//            throw new WafException("","用户信息不存在", HttpStatus.NOT_ACCEPTABLE);
-//        }
+        UserEntity userEntity= TokenUtil.getUser(req);
+        if(userEntity==null){
+            throw new WafException("","用户信息不存在", HttpStatus.NOT_ACCEPTABLE);
+        }
         return expertInfoService.getExpertInfo(expertInfoReq);
     }
 

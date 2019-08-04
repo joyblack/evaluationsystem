@@ -23,8 +23,8 @@ import java.util.List;
 @Service
 public class ExpertInfoFileService {
 
-    @Value("${image.format}")
-    private String imageFormat;
+//    @Value("${image.format}")
+//    private String imageFormat;
 
     @Value("${file.path}")
     private String filePath;

@@ -6,7 +6,7 @@ spring:
   datasource:
     url: jdbc:mysql://127.0.0.1:3306/evaluation_system?useUnicode=true&characterEncoding=utf8
     username: root
-    password: 123456
+    password: gzsjpxtgzclcslpzr0712-
     driver-class-name: com.mysql.jdbc.Driver
   jpa:
     hibernate:
@@ -27,8 +27,8 @@ spring:
   servlet:
     multipart:
       enabled: true
-      max-file-size: 100
-      max-request-size: 100
+      max-file-size: 100000
+      max-request-size: 100000
 jwtparam:
   issuer: ec8b63c05f999a15a8c8567002a560a8
   audience: 541bee7d2a922cc0a81ff4ca3c23f4af
