@@ -1,5 +1,7 @@
 package cn.gmsj.evaluationsystem.invite.service;
 
+import cn.gmsj.evaluationsystem.examine.domain.entity.ExamineEntity;
+import cn.gmsj.evaluationsystem.examine.domain.repository.ExamineRepository;
 import cn.gmsj.evaluationsystem.exception.WafException;
 import cn.gmsj.evaluationsystem.invite.domain.entity.ProjectInviteEntity;
 import cn.gmsj.evaluationsystem.invite.domain.repository.ProjectInviteRepository;
@@ -31,11 +33,17 @@ public class ProjectInviteService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private ExamineRepository examineRepository;
+
     public JSONObject accept(ProjectInviteReq projectInviteReq) {
         if (projectInviteReq.getId() != null) {
             ProjectInviteEntity projectInviteEntity = projectInviteRepository.findAllById(projectInviteReq.getId());
             if (projectInviteEntity != null) {
                 projectInviteEntity.setInviteState(InviteState.ACCEPT);
+                ExamineEntity examineEntity = new ExamineEntity();
+                examineEntity.setProjectInvite(projectInviteEntity);
+                examineRepository.save(examineEntity);
                 return ResultUtil.success();
             } else {
                 throw new WafException("", "邀请信息不存在", HttpStatus.NOT_ACCEPTABLE);
@@ -66,7 +74,7 @@ public class ProjectInviteService {
                 Pageable pageable = PageRequest.of(projectInviteListReq.getPage() - 1, projectInviteListReq.getSize());
                 Page<ProjectInviteEntity> projectInviteEntities = projectInviteRepository.findAllByUser(userEntity, pageable);
                 for (ProjectInviteEntity projectInviteEntity : projectInviteEntities.getContent()) {
-                    projectInviteEntity.setInviteContent("[参与抽取的局]和[被抽取的第三方机构]邀请您参加" +
+                    projectInviteEntity.setInviteContent("贵州省能源局邀请您参加" +
                             (projectInviteEntity.getProject() != null ? projectInviteEntity.getProject().getProjectName() : null) +
                             (projectInviteEntity.getReviewType() != null ? projectInviteEntity.getReviewType().getName() : null));
                 }
