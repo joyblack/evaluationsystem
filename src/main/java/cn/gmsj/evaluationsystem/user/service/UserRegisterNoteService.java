@@ -2,6 +2,7 @@ package cn.gmsj.evaluationsystem.user.service;
 
 import cn.gmsj.evaluationsystem.exception.WafException;
 import cn.gmsj.evaluationsystem.user.domain.model.UserRegisterNote;
+import cn.gmsj.evaluationsystem.user.domain.reposiory.UserRepository;
 import cn.gmsj.evaluationsystem.utils.PhoneUtil;
 import cn.gmsj.evaluationsystem.utils.RandomUtil;
 import cn.gmsj.evaluationsystem.utils.ResultUtil;
@@ -20,6 +21,9 @@ public class UserRegisterNoteService {
     @Autowired
     private UserRegisterNoteRedisService userRegisterNoteRedisService;
 
+    @Autowired
+    private UserRepository userRepository;
+
 
     public JSONObject sendNote(UserRegisterNote userRegisterNote) {
         if (StringUtil.isEmpty(userRegisterNote.getPhone())) {
@@ -27,6 +31,9 @@ public class UserRegisterNoteService {
         } else {
             if (!PhoneUtil.isMobile(userRegisterNote.getPhone())) {
                 throw new WafException("", "手机号码不合法", HttpStatus.NOT_ACCEPTABLE);
+            }
+            if (userRepository.findAllByPhone(userRegisterNote.getPhone()) != null) {
+                throw new WafException("", "该手机号已被注册", HttpStatus.NOT_ACCEPTABLE);
             }
             userRegisterNote.setAuthCode(RandomUtil.sixAuthCode());
             userRegisterNoteRedisService.put(userRegisterNote.getPhone(), userRegisterNote, 1800);
