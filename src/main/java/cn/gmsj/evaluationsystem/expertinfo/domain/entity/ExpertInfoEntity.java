@@ -1,18 +1,14 @@
 package cn.gmsj.evaluationsystem.expertinfo.domain.entity;
-
 import cn.gmsj.evaluationsystem.common.domain.entity.BaseEntity;
 import cn.gmsj.evaluationsystem.expertinfo.domain.enums.ExpertInfoType;
 import cn.gmsj.evaluationsystem.expertinfo.domain.enums.SexType;
 import lombok.Data;
 import lombok.ToString;
-import sun.plugin.dom.core.Text;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.awt.*;
 import java.io.Serializable;
-import java.util.List;
+
 
 /**
  * 专家基本信息

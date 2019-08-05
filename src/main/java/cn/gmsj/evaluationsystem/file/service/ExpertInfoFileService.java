@@ -39,7 +39,9 @@ public class ExpertInfoFileService {
     @Value("${file.path}")
     private String filePath;
 
-    private String path = "expertInfoImage";
+    private String pathImage = "expertInfoImage";
+
+    private String pathFile="expertInfoFile";
 
     private final static String FILE_SPLIT = "&&";
 
@@ -84,7 +86,7 @@ public class ExpertInfoFileService {
             for (String s : filePaths) {
                 stringBuffer.append(s + File.separator);
             }
-            String fileFinalPath = stringBuffer.toString() + path;
+            String fileFinalPath = stringBuffer.toString() + pathFile;
             String uuid = IdUtil.simpleUUID();
             ExpertInfoFileEntity expertInfoFileEntity=new ExpertInfoFileEntity();
             expertInfoFileEntity.setName(name);
@@ -132,7 +134,7 @@ public class ExpertInfoFileService {
         for (String s : filePaths) {
             stringBuffer.append(s + File.separator);
         }
-        String fileFinalPath = stringBuffer.toString() + path;
+        String fileFinalPath = stringBuffer.toString() + pathImage;
         expertInfoImageEntity.setPath(fileFinalPath + File.separator + fileName);
         expertInfoImageEntity.setUuidName(uuid + "-" + name + names[names.length - 1]);
         expertInfoImageEntity.setUserEntity(userEntity);

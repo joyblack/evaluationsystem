@@ -223,4 +223,8 @@ public class FileUtil {
         return false;
     }
 
+
+    public static void getOutputStream(String filePath,HttpServletRequest request,HttpServletResponse response) {
+
+    }
 }
