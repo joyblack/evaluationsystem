@@ -34,7 +34,7 @@ public class AuthorizeAspect {
             + "&&!execution(public * cn.gmsj.evaluationsystem.user.web.UserController.*(..))"
             + "&&!execution(public * cn.gmsj.evaluationsystem.file.web.ExpertInfoFileController.getUploadFile(..))"
             + "&&!execution(public * cn.gmsj.evaluationsystem.file.web.ExpertInfoFileController.getUploadImage(..))"
-            + "&&!execution(public * cn.gmsj.evaluationsystem.government.web.GovernmentUserController.*(..))")
+            + "&&!execution(public * cn.gmsj.evaluationsystem.governmentuser.web.GovernmentUserController.*(..))")
     public void auth() {
     }
 

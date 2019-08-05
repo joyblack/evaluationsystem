@@ -1,25 +1,26 @@
-package cn.gmsj.evaluationsystem.invite.enums;
+package cn.gmsj.evaluationsystem.projectmanage.enums;
 
 /**
- * 邀请类型
- *
  * @author 13562
  */
 
-public enum Invite {
+public enum InviteState {
     /**
-     * 邀请专家
+     * 接受
      */
-    EXPERT("专家"),
-
+    ACCEPT("接受"),
     /**
-     * 邀请第三方机构
+     * 拒绝
      */
-    THIRD_PARTY("第三方机构");
+    REFUSE("拒绝"),
+    /**
+     * 等待
+     */
+    AWAIT("等待");
 
     private String name;
 
-    Invite(String name) {
+    InviteState(String name) {
         this.name = name;
     }
 

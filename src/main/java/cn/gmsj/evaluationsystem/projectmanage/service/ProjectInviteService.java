@@ -1,13 +1,13 @@
-package cn.gmsj.evaluationsystem.invite.service;
+package cn.gmsj.evaluationsystem.projectmanage.service;
 
 import cn.gmsj.evaluationsystem.examine.domain.entity.ExamineEntity;
 import cn.gmsj.evaluationsystem.examine.domain.repository.ExamineRepository;
 import cn.gmsj.evaluationsystem.exception.WafException;
-import cn.gmsj.evaluationsystem.invite.domain.entity.ProjectInviteEntity;
-import cn.gmsj.evaluationsystem.invite.domain.repository.ProjectInviteRepository;
-import cn.gmsj.evaluationsystem.invite.enums.InviteState;
-import cn.gmsj.evaluationsystem.invite.web.req.ProjectInviteListReq;
-import cn.gmsj.evaluationsystem.invite.web.req.ProjectInviteReq;
+import cn.gmsj.evaluationsystem.projectmanage.domain.entity.ProjectInviteEntity;
+import cn.gmsj.evaluationsystem.projectmanage.domain.repository.ProjectInviteRepository;
+import cn.gmsj.evaluationsystem.projectmanage.enums.InviteState;
+import cn.gmsj.evaluationsystem.projectmanage.web.req.ProjectInviteListReq;
+import cn.gmsj.evaluationsystem.projectmanage.web.req.ProjectInviteReq;
 import cn.gmsj.evaluationsystem.user.domain.entity.UserEntity;
 import cn.gmsj.evaluationsystem.user.domain.reposiory.UserRepository;
 import cn.gmsj.evaluationsystem.utils.ResultUtil;

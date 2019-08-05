@@ -1,4 +1,4 @@
-package cn.gmsj.evaluationsystem.government.web.req;
+package cn.gmsj.evaluationsystem.governmentuser.web.req;
 
 import lombok.Data;
 import lombok.ToString;

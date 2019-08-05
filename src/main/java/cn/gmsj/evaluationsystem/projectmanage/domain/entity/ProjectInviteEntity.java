@@ -1,10 +1,9 @@
-package cn.gmsj.evaluationsystem.invite.domain.entity;
+package cn.gmsj.evaluationsystem.projectmanage.domain.entity;
 
 import cn.gmsj.evaluationsystem.common.domain.entity.BaseEntity;
-import cn.gmsj.evaluationsystem.invite.enums.Invite;
-import cn.gmsj.evaluationsystem.invite.enums.InviteDirection;
-import cn.gmsj.evaluationsystem.invite.enums.InviteState;
-import cn.gmsj.evaluationsystem.projectmanage.domain.entity.ProjectEntity;
+import cn.gmsj.evaluationsystem.projectmanage.enums.Invite;
+import cn.gmsj.evaluationsystem.projectmanage.enums.InviteDirection;
+import cn.gmsj.evaluationsystem.projectmanage.enums.InviteState;
 import cn.gmsj.evaluationsystem.projectmanage.enums.ReviewType;
 import cn.gmsj.evaluationsystem.user.domain.entity.UserEntity;
 import lombok.Data;

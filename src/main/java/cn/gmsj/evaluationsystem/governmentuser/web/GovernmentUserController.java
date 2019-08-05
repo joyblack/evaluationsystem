@@ -1,9 +1,9 @@
-package cn.gmsj.evaluationsystem.government.web;
+package cn.gmsj.evaluationsystem.governmentuser.web;
 
 import cn.gmsj.evaluationsystem.common.constant.SystemConstant;
 import cn.gmsj.evaluationsystem.exception.WafException;
-import cn.gmsj.evaluationsystem.government.domain.entity.GovernmentUserEntity;
-import cn.gmsj.evaluationsystem.government.service.GovernmentUserService;
+import cn.gmsj.evaluationsystem.governmentuser.domain.entity.GovernmentUserEntity;
+import cn.gmsj.evaluationsystem.governmentuser.service.GovernmentUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
@@ -18,7 +18,7 @@ import javax.validation.Valid;
  * Created by XiaoWen on 2019/8/4
  */
 @RestController
-@RequestMapping(value = SystemConstant.API_VERSION + "/government-user")
+@RequestMapping(value = SystemConstant.API_VERSION + "/governmentuser-user")
 public class GovernmentUserController {
 
     @Autowired

@@ -1,4 +1,4 @@
-package cn.gmsj.evaluationsystem.invite.enums;
+package cn.gmsj.evaluationsystem.projectmanage.enums;
 
 /**
  * 邀请参与方向

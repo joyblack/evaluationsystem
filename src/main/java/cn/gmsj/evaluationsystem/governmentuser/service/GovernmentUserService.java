@@ -1,8 +1,8 @@
-package cn.gmsj.evaluationsystem.government.service;
+package cn.gmsj.evaluationsystem.governmentuser.service;
 
 import cn.gmsj.evaluationsystem.exception.WafException;
-import cn.gmsj.evaluationsystem.government.domain.entity.GovernmentUserEntity;
-import cn.gmsj.evaluationsystem.government.domain.repository.GovernmentUserRepository;
+import cn.gmsj.evaluationsystem.governmentuser.domain.entity.GovernmentUserEntity;
+import cn.gmsj.evaluationsystem.governmentuser.domain.repository.GovernmentUserRepository;
 import cn.gmsj.evaluationsystem.utils.MD5Util;
 import cn.gmsj.evaluationsystem.utils.ResultUtil;
 import cn.gmsj.evaluationsystem.utils.StringUtil;

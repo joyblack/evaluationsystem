@@ -1,7 +1,7 @@
-package cn.gmsj.evaluationsystem.invite.domain.repository;
+package cn.gmsj.evaluationsystem.projectmanage.domain.repository;
 
 import cn.gmsj.evaluationsystem.common.domain.repository.BaseRepository;
-import cn.gmsj.evaluationsystem.invite.domain.entity.ProjectInviteEntity;
+import cn.gmsj.evaluationsystem.projectmanage.domain.entity.ProjectInviteEntity;
 import cn.gmsj.evaluationsystem.user.domain.entity.UserEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

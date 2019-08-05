@@ -1,7 +1,7 @@
-package cn.gmsj.evaluationsystem.government.domain.repository;
+package cn.gmsj.evaluationsystem.governmentuser.domain.repository;
 
 import cn.gmsj.evaluationsystem.common.domain.repository.BaseRepository;
-import cn.gmsj.evaluationsystem.government.domain.entity.GovernmentUserEntity;
+import cn.gmsj.evaluationsystem.governmentuser.domain.entity.GovernmentUserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**

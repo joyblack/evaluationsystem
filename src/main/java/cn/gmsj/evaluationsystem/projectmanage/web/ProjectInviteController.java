@@ -1,9 +1,9 @@
-package cn.gmsj.evaluationsystem.invite.web;
+package cn.gmsj.evaluationsystem.projectmanage.web;
 
 import cn.gmsj.evaluationsystem.common.constant.SystemConstant;
-import cn.gmsj.evaluationsystem.invite.service.ProjectInviteService;
-import cn.gmsj.evaluationsystem.invite.web.req.ProjectInviteListReq;
-import cn.gmsj.evaluationsystem.invite.web.req.ProjectInviteReq;
+import cn.gmsj.evaluationsystem.projectmanage.service.ProjectInviteService;
+import cn.gmsj.evaluationsystem.projectmanage.web.req.ProjectInviteListReq;
+import cn.gmsj.evaluationsystem.projectmanage.web.req.ProjectInviteReq;
 import cn.gmsj.evaluationsystem.utils.TokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;

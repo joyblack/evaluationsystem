@@ -1,4 +1,4 @@
-package cn.gmsj.evaluationsystem.invite.web.req;
+package cn.gmsj.evaluationsystem.projectmanage.web.req;
 
 import lombok.Data;
 

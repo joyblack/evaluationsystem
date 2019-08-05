@@ -1,4 +1,4 @@
-package cn.gmsj.evaluationsystem.government.domain.entity;
+package cn.gmsj.evaluationsystem.governmentuser.domain.entity;
 
 import cn.gmsj.evaluationsystem.common.domain.entity.BaseEntity;
 import cn.gmsj.evaluationsystem.enums.UserDataType;

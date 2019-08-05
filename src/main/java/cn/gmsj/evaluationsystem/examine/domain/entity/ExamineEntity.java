@@ -1,7 +1,7 @@
 package cn.gmsj.evaluationsystem.examine.domain.entity;
 
 import cn.gmsj.evaluationsystem.common.domain.entity.BaseEntity;
-import cn.gmsj.evaluationsystem.invite.domain.entity.ProjectInviteEntity;
+import cn.gmsj.evaluationsystem.projectmanage.domain.entity.ProjectInviteEntity;
 import lombok.Data;
 import lombok.ToString;
 
