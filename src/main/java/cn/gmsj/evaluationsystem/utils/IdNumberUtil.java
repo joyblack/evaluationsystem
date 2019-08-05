@@ -1,6 +1,6 @@
 package cn.gmsj.evaluationsystem.utils;
 
-import cn.gmsj.evaluationsystem.expertinfo.domain.enums.SexType;
+import cn.gmsj.evaluationsystem.specialist.domain.enums.SexType;
 
 /**
  * Created by XiaoWen on 2019/8/3

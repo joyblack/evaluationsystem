@@ -1,8 +1,8 @@
 package cn.gmsj.evaluationsystem.utils;
 
 import cn.gmsj.evaluationsystem.exception.WafException;
-import cn.gmsj.evaluationsystem.file.domain.entity.ExpertInfoFileEntity;
-import cn.gmsj.evaluationsystem.file.domain.entity.ExpertInfoImageEntity;
+import cn.gmsj.evaluationsystem.specialist.domain.entity.ExpertInfoFileEntity;
+import cn.gmsj.evaluationsystem.specialist.domain.entity.ExpertInfoImageEntity;
 import org.springframework.http.HttpStatus;
 
 import javax.servlet.http.HttpServletRequest;
