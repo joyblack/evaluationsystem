@@ -5,10 +5,12 @@ package cn.gmsj.evaluationsystem.projectmanage.service;
 import cn.gmsj.evaluationsystem.exception.WafException;
 import cn.gmsj.evaluationsystem.projectmanage.domain.entity.ProjectEntity;
 import cn.gmsj.evaluationsystem.projectmanage.domain.repository.ProjectRepository;
+import cn.gmsj.evaluationsystem.projectmanage.web.req.ProjectListReq;
 import cn.gmsj.evaluationsystem.utils.ResultUtil;
 import cn.gmsj.evaluationsystem.utils.UpdateUtil;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -47,5 +49,16 @@ public class ProjectService {
 
         }
         return ResultUtil.success(projectRepository.save(projectEntity));
+    }
+
+    public Object getOneProject(ProjectListReq projectListReq) {
+        if (projectListReq.getProjectName() != null) {
+            ProjectEntity projectEntity=new ProjectEntity();
+            List<ProjectEntity> list = projectRepository.findOneByProjectName(projectEntity.getProjectName());
+            return ResultUtil.success(projectEntity);
+        } else {
+            return ResultUtil.error("您查找的项目不存在！");
+        }
+
     }
 }

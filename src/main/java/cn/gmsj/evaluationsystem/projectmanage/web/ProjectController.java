@@ -4,13 +4,11 @@ import cn.gmsj.evaluationsystem.common.constant.SystemConstant;
 import cn.gmsj.evaluationsystem.exception.WafException;
 import cn.gmsj.evaluationsystem.projectmanage.domain.entity.ProjectEntity;
 import cn.gmsj.evaluationsystem.projectmanage.service.ProjectService;
+import cn.gmsj.evaluationsystem.projectmanage.web.req.ProjectListReq;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -35,5 +33,13 @@ public class ProjectController {
         } else {
             return projectService.updateData(projectEntity);
         }
+    }
+    @PostMapping(
+            value = "/getProjectName",
+            produces = {"application/json;charset=UTF-8"})
+    public  Object getProjectName(@RequestBody ProjectListReq projectListReq){
+        return  projectService.getOneProject(projectListReq);
+
+
     }
 }
