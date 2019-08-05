@@ -19,6 +19,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -63,9 +65,7 @@ public class ExpertInfoFileService {
             throw new WafException("", "文件错误", HttpStatus.NOT_ACCEPTABLE);
         } else if (Arrays.asList(filePostfixes).contains(names[names.length - 1])) {
             throw new WafException("", "文件类型错误", HttpStatus.NOT_ACCEPTABLE);
-        }else if (!FileUtil.fileNamePostfixCheck(imageFormat, names[names.length - 1])) {
-            return ResultUtil.error("文件类型错误");
-        } else {
+        }else {
             int num=0;
             List<ExpertInfoFileEntity> expertInfoFileEntityOld = expertInfoFileRepository.findAllByNameOrderByCreateTimeDesc(name);
             if(expertInfoFileEntityOld!=null&&expertInfoFileEntityOld.size()>0){
@@ -101,14 +101,13 @@ public class ExpertInfoFileService {
         }
     }
 
-    public JSONObject getUploadFile() {
-        List<ExpertInfoFileEntity> expertInfoFileEntityList=expertInfoFileRepository.findAll();
-        if(expertInfoFileEntityList==null){
-            expertInfoFileEntityList=new ArrayList<>();
+    public JSONObject getUploadFile(String uuid) {
+        ExpertInfoFileEntity expertInfoFileEntity=expertInfoFileRepository.findAllByUuid(uuid);
+        if(expertInfoFileEntity==null){
+            throw new WafException("", "文件不存在", HttpStatus.NOT_ACCEPTABLE);
         }
-        return ResultUtil.success(expertInfoFileEntityList);
+        return ResultUtil.success(expertInfoFileEntity);
     }
-
 
     public JSONObject uploadImage(MultipartFile file,UserEntity userEntity) {
         ExpertInfoImageEntity expertInfoImageEntity=new ExpertInfoImageEntity();

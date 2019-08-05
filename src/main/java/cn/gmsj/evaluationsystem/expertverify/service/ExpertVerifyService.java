@@ -79,19 +79,19 @@ public class ExpertVerifyService {
                         if (StringUtil.isNotEmpty(expertVerifyListReq.getSearch())) {
                             predicates.add(cb.or(
                                     cb.like(root.<String>get("name"), "%" + expertVerifyListReq.getSearch() + "%"),
-                                    cb.like(root.<String>get("idCard"), "%" + expertVerifyListReq.getSearch() + "%"),
-                                    cb.like(root.<String>get("expertInfoType"), "%" + expertVerifyListReq.getSearch() + "%")
+                                    cb.like(root.<String>get("idCard"), "%" + expertVerifyListReq.getSearch() + "%")
+                                    //cb.like(root.<String>get("expertInfoType"), "%" + expertVerifyListReq.getSearch() + "%")
                             ));
                         }
                         if (StringUtil.isNotEmpty(expertVerifyListReq.getName())) {
                             predicates.add(cb.like(root.<String>get("name"), "%" + expertVerifyListReq.getName() + "%"));
                         }
                         if (StringUtil.isNotEmpty(expertVerifyListReq.getIdCard())) {
-                            predicates.add(cb.like(root.<String>get("code"), "%" + expertVerifyListReq.getIdCard() + "%"));
+                            predicates.add(cb.like(root.<String>get("idCard"), "%" + expertVerifyListReq.getIdCard() + "%"));
                         }
-                        if (StringUtil.isNotEmpty(expertVerifyListReq.getExpertInfoType().getDescribe())) {
-                            predicates.add(cb.like(root.<String>get("expertInfoType"), "%" + expertVerifyListReq.getExpertInfoType().getDescribe() + "%"));
-                        }
+//                        if (StringUtil.isNotEmpty(expertVerifyListReq.getExpertInfoType().getDescribe())) {
+//                            predicates.add(cb.like(root.<String>get("expertInfoType"), "%" + expertVerifyListReq.getExpertInfoType().getDescribe() + "%"));
+//                        }
                         query.where(predicates.toArray(new Predicate[predicates.size()]));
                         query.orderBy(cb.desc(root.<Date>get("createTime").as(Date.class)));
                         return query.getRestriction();

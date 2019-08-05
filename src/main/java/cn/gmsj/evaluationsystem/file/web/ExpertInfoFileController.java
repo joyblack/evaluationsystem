@@ -2,16 +2,21 @@ package cn.gmsj.evaluationsystem.file.web;
 
 import cn.gmsj.evaluationsystem.common.constant.SystemConstant;
 import cn.gmsj.evaluationsystem.exception.WafException;
+import cn.gmsj.evaluationsystem.expertinfo.domain.entity.ExpertInfoEntity;
+import cn.gmsj.evaluationsystem.file.domain.entity.ExpertInfoFileEntity;
 import cn.gmsj.evaluationsystem.file.service.ExpertInfoFileService;
 import cn.gmsj.evaluationsystem.user.domain.entity.UserEntity;
+import cn.gmsj.evaluationsystem.utils.FileUtil;
 import cn.gmsj.evaluationsystem.utils.ResultUtil;
 import cn.gmsj.evaluationsystem.utils.TokenUtil;
+import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author Alan
@@ -45,11 +50,14 @@ public class ExpertInfoFileController {
      * @return
      */
     @RequestMapping(
-        value = "/getUploadFile",
+        value = "/getUploadFile/{uuid}",
         method = RequestMethod.GET,
         produces = {"application/json;charset=UTF-8"})
-    public Object getUploadFile() {
-        return expertInfoFileService.getUploadFile();
+    public void getUploadFile(@PathVariable("uuid")String uuid, HttpServletRequest request, HttpServletResponse response) {
+        JSONObject res=expertInfoFileService.getUploadFile(uuid);
+        ExpertInfoFileEntity expertInfoFileEntity=(ExpertInfoFileEntity)res.get("data");
+        FileUtil.downloadDataFile(expertInfoFileEntity,request,response);
+        //FileUtil.downloadFile(expertInfoFileEntity.getName(),expertInfoFileEntity.getPath(),request,response);
     }
 
     /**

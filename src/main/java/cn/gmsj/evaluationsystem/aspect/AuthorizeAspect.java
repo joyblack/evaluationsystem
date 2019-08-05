@@ -32,6 +32,8 @@ public class AuthorizeAspect {
     @Pointcut("execution(public * cn.gmsj.evaluationsystem.*.web.*.*(..))"
             + "&&!execution(public * cn.gmsj.evaluationsystem.login.web.LoginController.*(..))"
             + "&&!execution(public * cn.gmsj.evaluationsystem.user.web.UserController.*(..))"
+            + "&&!execution(public * cn.gmsj.evaluationsystem.file.web.ExpertInfoFileController.getUploadFile(..))"
+            + "&&!execution(public * cn.gmsj.evaluationsystem.file.web.ExpertInfoFileController.getUploadImage(..))"
             + "&&!execution(public * cn.gmsj.evaluationsystem.government.web.GovernmentUserController.*(..))")
     public void auth() {
     }
