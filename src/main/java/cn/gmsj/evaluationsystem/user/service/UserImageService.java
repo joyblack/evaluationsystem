@@ -38,7 +38,7 @@ public class UserImageService {
 
     private final static String FILE_SPLIT = "&&";
 
-    public JSONObject save(MultipartFile file,Long userId) {
+    public JSONObject save(MultipartFile file, Long userId) {
         UserImageEntity userImageEntity = new UserImageEntity();
         if(file.isEmpty()){
             return ResultUtil.error("营业执照为空");

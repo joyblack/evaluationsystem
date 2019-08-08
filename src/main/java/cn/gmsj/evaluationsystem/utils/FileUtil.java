@@ -29,50 +29,69 @@ public class FileUtil {
         fileOut.close();
     }
 
-    public static void downloadFile(String correspondName, String filePath, HttpServletRequest request,
-            HttpServletResponse response) {
-        File file = new File(filePath);
-        if (file.exists()) {
-            // 设置强制下载不打开
-            response.setContentType("application/force-download");
-            // 设置文件名
-            try {
-                response.setHeader("Content-Disposition", "attachment;filename*="
-                        + URLEncoder.encode(correspondName, "UTF-8").replaceAll("\\+", "%20"));
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
-            byte[] buffer = new byte[1024];
-            FileInputStream fis = null;
-            BufferedInputStream bis = null;
-            try {
-                fis = new FileInputStream(file);
-                bis = new BufferedInputStream(fis);
-                OutputStream os = response.getOutputStream();
-                int i = bis.read(buffer);
-                while (i != -1) {
-                    os.write(buffer, 0, i);
-                    i = bis.read(buffer);
+
+    /**
+     * By zhaoyi. 下载文件
+     * @param fileName
+     * @param request
+     * @param response
+     */
+    public static void downloadFile(String fileName, String path, HttpServletRequest request, HttpServletResponse response) {
+            File file = new File(path);
+            if (file.exists()) {
+                // 设置强制下载不打开
+                response.setContentType("application/force-download");
+                // 设置文件名
+                String codedFileName = null;
+                String agent = request.getHeader("USER-AGENT").toLowerCase();
+                try {
+                    codedFileName = URLEncoder.encode(fileName, "UTF-8");
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
-            } finally {
-                if (bis != null) {
+                if (agent.contains("firefox")) {
+                    response.setCharacterEncoding("utf-8");
                     try {
-                        bis.close();
-                    } catch (IOException e) {
+                        response.setHeader(
+                                "content-disposition",
+                                "attachment;filename=" + new String(fileName.getBytes(), "ISO8859-1"));
+                    } catch (UnsupportedEncodingException e) {
                         e.printStackTrace();
                     }
+                } else {
+                    response.setHeader("content-disposition", "attachment;filename=" + codedFileName);
                 }
-                if (fis != null) {
-                    try {
-                        fis.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
+                byte[] buffer = new byte[1024];
+                FileInputStream fis = null;
+                BufferedInputStream bis = null;
+                try {
+                    fis = new FileInputStream(file);
+                    bis = new BufferedInputStream(fis);
+                    OutputStream os = response.getOutputStream();
+                    int i = bis.read(buffer);
+                    while (i != -1) {
+                        os.write(buffer, 0, i);
+                        i = bis.read(buffer);
+                    }
+                } catch (Exception e) {
+                    throw new WafException("", "文件读写错误", HttpStatus.NOT_ACCEPTABLE);
+                } finally {
+                    if (bis != null) {
+                        try {
+                            bis.close();
+                        } catch (IOException e) {
+                            throw new WafException("", "文件读写错误", HttpStatus.NOT_ACCEPTABLE);
+                        }
+                    }
+                    if (fis != null) {
+                        try {
+                            fis.close();
+                        } catch (IOException e) {
+                            throw new WafException("", "文件读写错误", HttpStatus.NOT_ACCEPTABLE);
+                        }
                     }
                 }
             }
-        }
     }
 
 

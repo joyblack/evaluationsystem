@@ -238,11 +238,13 @@ public class ExpertInfoService {
     }
 
     public JSONObject getDeclareMajorList() {
+        // declareMajorTypeEntityMap没有用到
         List<DeclareMajorTypeEntity> declareMajorTypeEntityList=declareMajorTypeRepository.findAll();
         Map<String,DeclareMajorTypeEntity> declareMajorTypeEntityMap=new HashMap<>();
         for(DeclareMajorTypeEntity declareMajorTypeEntity:declareMajorTypeEntityList){
             declareMajorTypeEntityMap.put(declareMajorTypeEntity.getDeclareMajorTypeName(),declareMajorTypeEntity);
         }
+        // 映射为类型为key，value为该类型的所有专业的列表
         Map<String,List<DeclareMajorArrayRes>> declareMajorArrayResMap=new HashMap<>();
         List<DeclareMajorArrayRes> declareMajorArrayResList=new ArrayList<>();
         List<DeclareMajorEntity> declareMajorEntityList = declareMajorRepository.findAll();

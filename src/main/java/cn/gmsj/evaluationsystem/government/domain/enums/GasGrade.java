@@ -12,7 +12,7 @@ public enum GasGrade {
     /**
      * 高瓦斯矿井
      */
-    HIGHT_GAS_MINES("高瓦斯矿井"),
+    HIGH_GAS_MINES("高瓦斯矿井"),
     /**
      * 煤(岩)与瓦斯(二氧化碳)突出矿井
      */

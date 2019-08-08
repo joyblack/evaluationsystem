@@ -10,8 +10,7 @@ import java.util.List;
 /**
  * Created by XiaoWen on 2019/8/3
  */
-public interface UserImageRepository extends
-        BaseRepository<UserImageEntity>, JpaRepository<UserImageEntity,Long> {
+public interface UserImageRepository extends BaseRepository<UserImageEntity>, JpaRepository<UserImageEntity,Long> {
 
     List<UserImageEntity> findAllByUserEntity(UserEntity userEntity);
 }

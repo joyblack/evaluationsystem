@@ -37,5 +37,4 @@ public class ActivityRecordEntity extends BaseEntity implements Serializable {
      */
     private UserDataType userDataType;
 
-
 }

@@ -82,9 +82,4 @@ public class UserEntity extends BaseEntity implements Serializable {
     @Transient
     private List<UserImageEntity> userImageEntities;
 
-
-
-
-
-
 }
