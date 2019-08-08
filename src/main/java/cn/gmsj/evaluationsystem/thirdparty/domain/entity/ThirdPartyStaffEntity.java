@@ -31,9 +31,7 @@ public class ThirdPartyStaffEntity extends BaseEntity implements Serializable {
     private String achievement;
 
     /**
-     * 技术人员所属第三方机构
+     * 技术人员所属第三方机构ID
      */
-    @JoinColumn(name = "third_party_id")
-    @ManyToOne(cascade = {}, fetch = FetchType.EAGER)
-    private ThirdPartyEntity thirdPartyEntity;
+    private Long thirdPartyId;
 }

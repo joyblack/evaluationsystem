@@ -68,7 +68,7 @@ public class BusinessLicenceService {
 
         BusinessLicenceEntity businessLicenceEntity = new BusinessLicenceEntity();
         // 所属第三方机构
-        businessLicenceEntity.setThirdPartyEntity(thirdPartyEntity);
+        businessLicenceEntity.setThirdPartyId(thirdPartyEntity.getId());
         // uuid
         String uuid = UUID.randomUUID().toString().replace("-", "");
         businessLicenceEntity.setUuid(uuid);

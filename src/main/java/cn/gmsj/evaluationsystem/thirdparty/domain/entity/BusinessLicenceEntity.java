@@ -35,8 +35,6 @@ public class BusinessLicenceEntity extends BaseEntity implements Serializable {
     /**
      * 第三方机构ID
      */
-    @JoinColumn(name = "third_party_id")
-    @ManyToOne(cascade = {}, fetch = FetchType.EAGER)
-    private ThirdPartyEntity thirdPartyEntity;
+    private Long thirdPartyId;
 
 }

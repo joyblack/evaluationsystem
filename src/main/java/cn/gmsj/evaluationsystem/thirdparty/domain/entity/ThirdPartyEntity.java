@@ -8,6 +8,8 @@ import lombok.ToString;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
+import java.util.List;
+import java.util.Set;
 
 /**
  * 第三方机构信息
@@ -17,11 +19,9 @@ import java.io.Serializable;
 @Entity(name = "all_third_party")
 public class ThirdPartyEntity extends BaseEntity implements Serializable {
     /**
-     * 对应登陆账户信息
+     * 对应登陆账户ID
      */
-    @OneToOne(cascade = {}, fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id")
-    private UserEntity user;
+    private Long userId;
 
     @NotEmpty(message = "单位全称不能为空")
     private String companyName;
@@ -58,6 +58,9 @@ public class ThirdPartyEntity extends BaseEntity implements Serializable {
 
     @NotEmpty(message = "手机号码不能为空")
     private String phone;
+
+    @Transient
+    private List<ThirdPartyStaffEntity> thirdPartyStaffEntities;
 
     /**
      * 相关工作主要业绩
